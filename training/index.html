@@ -1018,6 +1018,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Diffusion settings">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#conditional-training-cfg" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Conditional training (CFG)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
           <li class="md-nav__item">
@@ -1537,6 +1554,39 @@
 </tr>
 </tbody>
 </table>
+<h4 id="conditional-training-cfg">Conditional training (CFG)</h4>
+<p>Setting <strong>Context mask rate</strong> &gt; 0 trains a conditional model compatible with classifier-free guidance (CFG) at inference. During each training step, the property label is randomly dropped with this probability; the model learns both the conditional (<code>φ(z, t, y)</code>) and unconditional (<code>φ(z, t)</code>) denoising distributions in one pass. At inference, the two predictions are combined as:</p>
+<div class="highlight"><pre><span></span><code>ε̃ = (1 + w) φ(z, t, y) − w φ(z, t)
+</code></pre></div>
+<p>where <code>w</code> is the CFG scale set at generation time. Typical values for Context mask rate are 0.1–0.3.</p>
+<p><strong>Property normalization</strong> affects how strongly the conditioning signal contributes to the denoising function and consequently how well CFG guidance transfers to generated structures. Two common approaches:</p>
+<ul>
+<li><strong>Fixed scaling</strong> — multiply the raw property value by a constant before feeding it to the model. Simple but sensitive to the chosen scale.</li>
+<li><strong>MAD normalization</strong> — scale property values by the median absolute deviation of the training set. More robust across different property ranges and has been shown to retain a higher structural validity rate at strong CFG scales compared to fixed scaling.</li>
+</ul>
+<p>Choose the normalization scheme consistently across the generative and regression (property-predictor) models for a given experiment.</p>
+<p><strong>Conditioning mechanism</strong> — MolCraftDiffusion supports two ways to inject the property signal into the denoising network:</p>
+<table>
+<thead>
+<tr>
+<th>Mechanism</th>
+<th>How it works</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Feature concatenation (Concat.)</strong></td>
+<td>The property label <code>y</code> is appended directly to the molecular representation before each denoising step: <code>z = [x, h, y]</code>.</td>
+<td>The conditional variable becomes part of the main noise-prediction input, giving it a stronger gradient during fine-tuning. Generally effective for CFG-guided generation.</td>
+</tr>
+<tr>
+<td><strong>Adapter</strong></td>
+<td>A learnable MLP maps <code>y</code> into the hidden feature space of each EGNN block and adds this contribution only when the property context is present.</td>
+<td>Attaches the conditioning pathway to an already-trained denoising network; may receive weaker corrective gradients during fine-tuning.</td>
+</tr>
+</tbody>
+</table>
 <p><strong>Flow-matching extras</strong> (shown only for <code>flow_matching</code>):</p>
 <table>
 <thead>
@@ -1827,8 +1877,6 @@
 <li><strong>Copy command</strong> — copies a ready-to-run shell command (<code>MolCraftDiff train --config &lt;path&gt;</code>) to the clipboard.</li>
 <li><strong>Download YAML</strong> — saves the configuration as a <code>.yaml</code> file.</li>
 </ul>
-<!-- screenshot: training tab — dry mode result showing inline YAML and Copy command + Download YAML buttons -->
-<p><img alt="Dry mode YAML output" src="assets/screenshots/training_dry_yaml.png" /></p>
 <hr />
 <h2 id="job-history">Job history</h2>
 <p>Every submitted Run job appears in the right column. Each row shows the experiment name and a status badge (<code>queued / running / completed / failed / cancelled</code>).</p>
@@ -1887,8 +1935,6 @@
 </tr>
 </tbody>
 </table>
-<!-- screenshot: training tab — job history expanded, LOG tab active, running job with Stop button -->
-<p><img alt="Training job history" src="assets/screenshots/training_job_history.png" /></p>
 <hr />
 <h2 id="configuration-presets">Configuration presets</h2>
 <p>The presets bar above the form works identically to the generation presets — see <a href="../generation/presets/">Presets</a>. Presets save the full form state and restore it in one click.</p>

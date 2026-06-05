@@ -937,6 +937,84 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#5-multi-source-dataset-curation-and-property-space-exploration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Multi-source dataset curation and property-space exploration
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Multi-source dataset curation and property-space exploration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#steps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Steps
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-conditional-generation-benchmarking" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Conditional generation benchmarking
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Conditional generation benchmarking">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Overview
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#steps_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Steps
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-to-look-for" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What to look for
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -1092,8 +1170,103 @@
 <li><strong>Data Manager</strong> → <strong>Download dataset</strong> → select <strong>Filtered view</strong> and click <strong>Download ASE .db</strong> for downstream use.</li>
 </ol>
 <hr />
-<p>!!! note "Detailed workflow recipes"
-    Step-by-step worked examples with specific parameter recommendations will be added in a follow-up update.</p>
+<h2 id="5-multi-source-dataset-curation-and-property-space-exploration">5. Multi-source dataset curation and property-space exploration</h2>
+<p>This workflow uses AutomaticMolCraft as a standalone curation environment — no generative model is required. It is illustrated in the paper using three OSCAR organocatalyst sources (OSCAR-NHC, OSCAR-DHBD, and OSCAR-seed).</p>
+<h3 id="steps">Steps</h3>
+<p><img alt="Dataset curation and visualisation workflow for OSCAR organocatalysts" src="../assets/fig_app1.png" /></p>
+<p><em>(a) OSCAR-NHC, OSCAR-DHBD, and OSCAR-seed sources are uploaded, staged, reconciled, compiled, featurised, projected, filtered, and exported through the Management, Analysis tools, and Visualization workspaces. (b) Source-resolved distribution of the computed HOMO–LUMO gap. (c) HOMO–LUMO property-space projection, coloured by source. (d–e) Two-dimensional fingerprint projection coloured by source and by gap value.</em></p>
+<p><strong>Stage and reconcile sources</strong></p>
+<ol>
+<li>Open the <strong><a href="../data-manager/">Data Manager</a></strong> tab.</li>
+<li>Register each source (CSV + XYZ folder or ASE <code>.db</code>) and assign a short source label (e.g. <code>NHC</code>, <code>DHBD</code>, <code>seed</code>).</li>
+<li>In each source flashcard, rename or exclude columns to harmonise the schema across sources. If two sources use different column names for the same quantity, rename both to a shared name before compiling.</li>
+</ol>
+<p><strong>Compute derived columns before compilation</strong></p>
+<ol>
+<li>If a derived quantity is needed (e.g. a HOMO–LUMO gap from separate HOMO and LUMO energy columns), click <strong>Computed</strong> on the staged source, choose the two operand columns and the operator (<code>-</code>), and name the output column (e.g. <code>gap_eV</code>). The computed column participates in compilation like any other selected column.</li>
+</ol>
+<p><strong>Compile</strong></p>
+<ol>
+<li>Set <strong>duplicate-ID policy</strong> = <code>rename</code> and <strong>column-conflict policy</strong> = <code>merge</code>, then click <strong>Compile dataset</strong>.</li>
+<li>After compilation the header card shows the total molecule and column count across all sources. The <code>data_source</code> column records which source each row came from.</li>
+</ol>
+<p><strong>Featurize and project</strong></p>
+<ol>
+<li>Open <strong><a href="../analysis-tools/">Analysis tools</a></strong>. Run <strong>XYZ to SMILES</strong> to add <code>smiles</code> and <code>morgan_fp</code> columns.</li>
+<li>Run <strong>Dimensionality reduction</strong> (UMAP, metric = <code>cosine</code>) on the <code>morgan_fp</code> column to produce <code>dim_red_x</code> / <code>dim_red_y</code> coordinates.</li>
+<li>Apply both results to the dataset.</li>
+</ol>
+<p><strong>Explore and filter</strong></p>
+<ol>
+<li>Open <strong><a href="../visualization/">Visualization</a></strong>. Add:<ul>
+<li>A <strong>Histogram</strong> on the <code>gap_eV</code> column to see the property distribution per source (color by <code>data_source</code>).</li>
+<li>A <strong>2D Scatter</strong> with <code>homo</code> / <code>lumo</code> on the axes to inspect the property-space structure.</li>
+<li>A <strong>2D Scatter</strong> with <code>dim_red_x</code> / <code>dim_red_y</code> on the axes, colored by <code>data_source</code> or <code>gap_eV</code>, to see the chemical-space layout.</li>
+</ul>
+</li>
+<li>Brush or lasso a region of interest in any plot — the selection propagates across all panels and into the 3D molecule viewer.</li>
+<li>Use the <strong>Range filter</strong> on <code>gap_eV</code> in the filter panel to define property subsets (e.g. low-gap ≤ 7.0 eV, high-gap ≥ 9.0 eV).</li>
+</ol>
+<p><strong>Export</strong></p>
+<ol>
+<li>With a filter active, return to <strong>Data Manager</strong> and choose <strong>Filtered view</strong> in the export panel. Download as <strong>CSV + XYZ zip</strong> or <strong>ASE .db</strong> for downstream modelling.</li>
+</ol>
+<hr />
+<h2 id="6-conditional-generation-benchmarking">6. Conditional generation benchmarking</h2>
+<p>This workflow uses AutomaticMolCraft to run a property-directed generation benchmark — comparing different conditioning strategies and hyperparameters using a shared, traceable dataset state. It is illustrated in the paper using conditional HOMO–LUMO gap generation on the FORMED dataset.</p>
+<h3 id="overview">Overview</h3>
+<p>The key idea is that AutomaticMolCraft keeps model configuration, generated molecules, quality metrics, and predicted properties in one compiled dataset, so all runs can be compared side-by-side in Visualization without manually reconciling output folders.</p>
+<p><img alt="Conditional generation benchmarking workflow" src="../assets/fig3_wf.svg" /></p>
+<p><em>Model Training is used to configure and train the conditioned diffusion models and the HOMO–LUMO gap regressor. The 3D Molecule Generation workspace samples molecules from the trained conditional checkpoints, Management registers the generated structures and benchmark metadata as labelled dataset sources, Analysis tools perform geometry optimisation and property prediction, and Visualization supports comparison of generated molecules and derived descriptors in linked plots and molecular viewers.</em></p>
+<h3 id="steps_1">Steps</h3>
+<p><strong>Train conditional models</strong></p>
+<ol>
+<li>Open the <strong><a href="../training/">Model Training</a></strong> tab.</li>
+<li>Select task family <code>diffusion</code>.</li>
+<li>Set <strong>Context mask rate</strong> &gt; 0 (e.g. 0.2) — this randomly drops the property label during training, enabling classifier-free guidance at inference.</li>
+<li>Configure the dataset path, atom vocabulary, and training hyperparameters. Use <strong>Dry</strong> mode first to validate the generated YAML before committing compute.</li>
+<li>Submit separate training runs for each configuration you want to compare (e.g. different conditioning strategies or normalization schemes). Each run appears in the job history and produces a checkpoint under <code>MOLCRAFT_MODELS_DIR</code>.</li>
+<li>If property prediction is needed downstream, also train a <strong>regression</strong> model (task family = <code>regression</code>) on the same dataset and property column.</li>
+</ol>
+<p><strong>Generate with property targets</strong></p>
+<ol>
+<li>Open <strong><a href="../generation/">3D Generation</a></strong>. Select a trained conditional checkpoint (labelled <strong>CFG</strong> in the model list).</li>
+<li>Set a <strong>CFG scale</strong> (e.g. 1–3) and enter the property target (e.g. HOMO–LUMO gap = 3 eV for a low-gap target, or 15 eV for a high-gap target).</li>
+<li>Run the job and inspect generated structures in the split viewer.</li>
+<li>Repeat for each combination of checkpoint, target value, and CFG scale you want to benchmark. Keep <strong>seed</strong> fixed across runs for a fair comparison.</li>
+</ol>
+<p><strong>Register and compile</strong></p>
+<ol>
+<li>Open <strong><a href="../data-manager/">Data Manager</a></strong>. For each generation job, click <strong>Add generated molecules</strong>, select the job, and set a <strong>Data source label</strong> that encodes the experimental conditions (e.g. <code>concat_mad_cfg2_gap3</code>).</li>
+<li>Once all runs are staged, compile with <strong>duplicate-ID = rename</strong> so molecules from different runs are not merged.</li>
+<li>Add any supplementary benchmark metadata as a separate CSV source (e.g. a table of model names, conditioning method, normalization scheme) and join it via the source label.</li>
+</ol>
+<p><strong>Analyze: quality checks and property prediction</strong></p>
+<ol>
+<li>Open <strong><a href="../analysis-tools/">Analysis tools</a></strong>.</li>
+<li>Run <strong>Validity and connectivity metrics</strong> (metric set = <code>posebuster</code>) to flag geometrically invalid structures. Apply the result.</li>
+<li>Run <strong>XTB geometry optimization</strong> (level = <code>gfn2</code>) on valid structures. Optionally register the optimised geometries as a new source or replace in-place.</li>
+<li>Run <strong>Predict properties</strong> using the trained regression checkpoint to add predicted HOMO–LUMO gap values.</li>
+<li>Apply all results to the active dataset.</li>
+</ol>
+<p><strong>Compare in Visualization</strong></p>
+<ol>
+<li>Open <strong><a href="../visualization/">Visualization</a></strong>. Add plots with:<ul>
+<li><strong>X axis</strong>: CFG scale (or model label), <strong>Y axis</strong>: predicted HOMO–LUMO gap — to see whether the model shifts molecules toward the target.</li>
+<li><strong>Color by</strong>: PoseBuster pass/fail boolean column — to inspect the quality–guidance trade-off.</li>
+<li>A <strong>Histogram</strong> on the gap column, colored by source label, to compare distributions across runs.</li>
+</ul>
+</li>
+<li>Use lasso selections to inspect 3D structures from specific runs side-by-side in the molecule viewer.</li>
+</ol>
+<p><img alt="Conditional generation benchmark results" src="../assets/fig3_res.svg" /></p>
+<p><em>(a) Effect of CFG scale on HOMO–LUMO gap targeting and molecular-quality checks for the Concat. model with fixed gap scaling. (b) Comparison of conditioning and normalization choices, showing the target-dependent response of the Concat. model and the improved quality retention obtained with MAD normalization.</em></p>
+<h3 id="what-to-look-for">What to look for</h3>
+<ul>
+<li><strong>Guidance effectiveness</strong>: does increasing CFG scale shift the predicted property toward the target? Weak conditioning strategies (e.g. adapter-based conditioning under some settings) may show little target-dependent response.</li>
+<li><strong>Quality cost</strong>: higher CFG scales typically reduce the fraction of structures passing PoseBuster checks. MAD normalization of property values has been shown to retain a higher validity rate than fixed scaling at equivalent CFG strengths.</li>
+<li><strong>Source label traceability</strong>: the <code>data_source</code> column keeps each run's provenance intact throughout the compiled dataset, so all comparisons remain traceable.</li>
+</ul>
 
 
 

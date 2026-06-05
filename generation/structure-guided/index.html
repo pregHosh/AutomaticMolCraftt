@@ -1226,8 +1226,6 @@
 2. Switches mode to <strong>Outpaint</strong> automatically.
 3. Pre-selects the atoms that were frozen during training.</p>
 <p>Once a scaffold loads, its 3D structure appears in an interactive viewer and the atom count fields are auto-populated (Fixed atom count = scaffold atoms + 1; Min = scaffold atoms).</p>
-<!-- screenshot: structure-guided tab — scaffold loaded, 3D viewer showing molecule with atom count and name below it -->
-<p><img alt="Scaffold loaded" src="../assets/screenshots/sg_scaffold_loaded.png" /></p>
 <h3 id="3-choose-inpaint-or-outpaint">3. Choose inpaint or outpaint</h3>
 <p>Use the <strong>inpaint / outpaint</strong> segmented button (visible after a scaffold loads).</p>
 <table>
@@ -1255,8 +1253,6 @@
 <p>Click atoms in the 3D viewer to toggle them between frozen (highlighted) and free. Right-click anywhere in the viewer to clear all selections.</p>
 <p>Selected atom indices appear as removable chips below the viewer — click a chip's ✕ to deselect that atom.</p>
 <p>Outpaint mode requires at least one selected atom; inpaint mode works with any number (including zero, which is equivalent to de-novo generation with a positional prior).</p>
-<!-- screenshot: structure-guided tab — viewer with 4 atoms highlighted and their index chips below -->
-<p><img alt="Atom selection in viewer" src="../assets/screenshots/sg_atom_selection.png" /></p>
 <h3 id="5-set-connector-bonds-outpaint-only">5. Set connector bonds <em>(outpaint only)</em></h3>
 <p>For each selected atom, set the <strong>bond order</strong> to the newly generated atoms using the number field labelled <code>Connector &lt;index&gt;</code>. This controls the order of the bond(s) formed between the scaffold and the new fragment:</p>
 <ul>

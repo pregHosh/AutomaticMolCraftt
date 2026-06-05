@@ -1281,8 +1281,8 @@
 
 <h1 id="visualization">Visualization</h1>
 <p>The <strong>Visualization</strong> tab is a multi-panel workspace for exploring a compiled dataset. All panels share a <strong>selection state</strong>: interacting with any panel highlights the same molecules across all others and in the molecule viewer.</p>
-<!-- screenshot: visualization tab — full tab with two scatter plots, a histogram, and a 3D molecule viewer, showing a lasso selection highlighted across all panels -->
-<p><img alt="Visualization workspace" src="assets/screenshots/visualization_overview.png" /></p>
+<p><img alt="Visualization workspace" src="../assets/screenshots/visualization_tab.png" /></p>
+<p><em>Linked plots, filters, sortable tables, and molecular viewers share the same molecule-selection state, allowing property trends and structural subsets to be inspected within a single interface.</em></p>
 <p>!!! note
     A dataset must be loaded via the <a href="../data-manager/">Data Manager</a> before any panels can be used.</p>
 <hr />
@@ -1335,8 +1335,6 @@
 </tbody>
 </table>
 <p>Lasso is the primary multi-selection tool. The lasso polygon activates only after the cursor has moved more than ~6 pixels from the starting point (short clicks are treated as single-point selection instead).</p>
-<!-- screenshot: 2D scatter plot — freeform lasso polygon drawn with highlighted points inside -->
-<p><img alt="Lasso selection" src="assets/screenshots/viz_lasso.png" /></p>
 <h3 id="plot-settings">Plot settings</h3>
 <p>Click the <strong>⚙</strong> icon on any scatter panel (press <strong>Esc</strong> to close the modal).</p>
 <h4 id="marker-size">Marker Size</h4>
@@ -1494,8 +1492,6 @@
 </ul>
 <h4 id="statistical-view">Statistical View</h4>
 <p>Enable <strong>Show summary and correlation</strong> to overlay mean, standard deviation, and Pearson r for the two plotted axes.</p>
-<!-- screenshot: scatter settings modal — all sections open, example values set -->
-<p><img alt="Scatter settings modal" src="assets/screenshots/viz_scatter_settings.png" /></p>
 <hr />
 <h2 id="3d-scatter-plot">3D Scatter plot</h2>
 <p>Identical axes, interactions, and settings to the 2D scatter plot, with an added <strong>Z axis</strong> binding. Shape settings are not available in 3D.</p>
@@ -1575,13 +1571,9 @@
 </tr>
 </tbody>
 </table>
-<!-- screenshot: histogram settings modal -->
-<p><img alt="Histogram settings" src="assets/screenshots/viz_histogram_settings.png" /></p>
 <hr />
 <h2 id="3d-structure-viewer">3D Structure Viewer</h2>
 <p>The molecule viewer renders the 3D geometry of each selected molecule. It supports viewing up to 9 molecules simultaneously in a configurable split layout.</p>
-<!-- screenshot: 3D viewer panel — three panes showing different molecules, 3D mode active in two, 2D mode in one -->
-<p><img alt="Molecule viewer" src="assets/screenshots/viz_molecule_viewer.png" /></p>
 <h3 id="viewer-controls-header-bar">Viewer controls (header bar)</h3>
 <table>
 <thead>
@@ -1750,8 +1742,6 @@
 </table>
 <p><strong>SMARTS</strong> (SMiles ARbitrary Target Specification): a pattern language for substructure queries (e.g. <code>[#6]~[#7]</code> matches any carbon bonded to any nitrogen by any bond type).</p>
 <p><strong>Tanimoto similarity</strong>: ranges 0–1 (0 = nothing in common, 1 = identical) based on shared Morgan fingerprint bits between the query and each dataset molecule.</p>
-<!-- screenshot: filter panel — range slider active on one column, SMARTS filter on another, row count reduced -->
-<p><img alt="Filter panel" src="assets/screenshots/viz_filters.png" /></p>
 
 
 

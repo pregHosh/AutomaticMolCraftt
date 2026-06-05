@@ -1126,8 +1126,6 @@
 ./dev.sh
 </code></pre></div>
 <p>Open <code>http://localhost:8000</code>. The app opens on the <strong>Management</strong> tab by default.</p>
-<!-- screenshot: top-level — browser showing the app on first load, Management tab active, empty state -->
-<p><img alt="App on first load" src="assets/screenshots/quickstart_first_load.png" /></p>
 <hr />
 <h2 id="2-generate-a-molecule">2. Generate a molecule</h2>
 <h3 id="2a-open-the-generation-tab">2a. Open the generation tab</h3>
@@ -1137,8 +1135,6 @@
 <h3 id="2b-select-a-model">2b. Select a model</h3>
 <p>The <strong>Models</strong> panel (left column) lists every checkpoint folder found under <code>MOLCRAFT_MODELS_DIR</code>. Models labelled <strong>CFG</strong> support property-targeted generation; models labelled <strong>Unconditional</strong> generate freely. Click one to select it.</p>
 <p>If the list is empty, check that your checkpoint folders each contain <code>edm_chem.pkl</code> and that <code>MOLCRAFT_MODELS_DIR</code> points to the right location (shown as grey text under the model list).</p>
-<!-- screenshot: generation tab — models panel with one model selected, description visible -->
-<p><img alt="Model selected" src="assets/screenshots/quickstart_model_selected.png" /></p>
 <h3 id="2c-configure-parameters">2c. Configure parameters</h3>
 <p>Keep defaults for the first run:</p>
 <ul>
@@ -1152,12 +1148,8 @@
 <p>The <strong>Results</strong> panel (right column) shows:
 - A status badge cycling <code>queued → running → completed</code>
 - A live log tail updating every 2 seconds</p>
-<!-- screenshot: generation tab — results panel with status "running" and several log lines visible -->
-<p><img alt="Generation running" src="assets/screenshots/quickstart_running.png" /></p>
 <h3 id="2e-inspect-the-result">2e. Inspect the result</h3>
 <p>When the status shows <code>completed</code>, the molecule name appears as a pill in the results list. Click the pill to load it.</p>
-<!-- screenshot: generation tab — 3D viewer showing the generated molecule, pill highlighted in the list -->
-<p><img alt="3D viewer with result" src="assets/screenshots/quickstart_result.png" /></p>
 <p>In the viewer:</p>
 <ul>
 <li><strong>Rotate</strong>: left-click drag</li>
@@ -1178,8 +1170,6 @@
 <li>Click <strong>Compile dataset</strong>.</li>
 </ol>
 <p>A progress bar appears while the dataset is built. On completion, the header card shows the molecule and column count.</p>
-<!-- screenshot: management tab — after compile, header showing molecule count and column count -->
-<p><img alt="Dataset compiled" src="assets/screenshots/quickstart_compiled.png" /></p>
 <p>!!! tip "Loading non-generated data"
     For existing data, use the source registration panel instead. Choose <strong>CSV + XYZ folder</strong> or <strong>ASE database (.db)</strong>, pick files or paste paths, then click <strong>Register source</strong> to stage and inspect columns or <strong>Register and compile</strong> for a one-step load.</p>
 <hr />
@@ -1191,8 +1181,6 @@
 <li>Left-click drag to draw a lasso and select a subset of molecules.</li>
 <li>The built-in <strong>3D Structure Viewer</strong> panel updates to show the selected molecule.</li>
 </ol>
-<!-- screenshot: visualization tab — scatter plot with a lasso selection and the 3D viewer showing the selected molecule -->
-<p><img alt="Visualization with selection" src="assets/screenshots/quickstart_visualization.png" /></p>
 <hr />
 <h2 id="next-steps">Next steps</h2>
 <table>

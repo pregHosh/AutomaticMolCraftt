@@ -1120,8 +1120,6 @@
 
 <h1 id="analysis-tools">Analysis Tools</h1>
 <p>The <strong>Analysis tools</strong> tab enriches the loaded dataset by running computations as asynchronous background jobs. Each job either adds new columns to the dataset or replaces existing XYZ geometries with optimized versions.</p>
-<!-- screenshot: analysis tools tab — left panel showing tool list, right panel showing tool inputs for one selected tool -->
-<p><img alt="Analysis tools overview" src="assets/screenshots/analysis_overview.png" /></p>
 <p>!!! note
     A compiled dataset must be present (loaded via the <a href="../data-manager/">Data Manager</a>) before running any tool.</p>
 <hr />
@@ -1134,8 +1132,6 @@
 <li>Optionally click <strong>Register as new source</strong> to add the result as a staged source in the Data Manager (useful for geometry optimization outputs or featurizations you want to export separately).</li>
 </ol>
 <p>Each job in the queue shows its tool name, status badge (<code>queued / running / completed / failed / cancelled</code>), and a log/terminal button to inspect the raw output.</p>
-<!-- screenshot: analysis tools tab — job queue with one completed job showing Apply and Register buttons -->
-<p><img alt="Completed job with Apply" src="assets/screenshots/analysis_job_done.png" /></p>
 <p><strong>Cancelling</strong>: click the stop button on a running job to cancel it. Queued jobs can be removed before they start.</p>
 <hr />
 <h2 id="recommended-run-order">Recommended run order</h2>

@@ -1210,8 +1210,8 @@
 </tr>
 </tbody>
 </table>
-<!-- screenshot: generation tab — all three columns annotated with their names -->
-<p><img alt="Generation tab layout" src="../assets/screenshots/generation_layout.png" /></p>
+<p><img alt="Generation workspace" src="../assets/screenshots/generation_tab.png" /></p>
+<p><em>The generation workspace exposes model selection, sampling parameters, conditional-generation controls, job execution, generated-structure inspection, and registration of generated molecules for downstream curation and analysis.</em></p>
 <hr />
 <h2 id="workflow">Workflow</h2>
 <h3 id="1-select-a-model">1. Select a model</h3>
@@ -1224,8 +1224,6 @@
 - Architecture name and parameter count
 - All training hyperparameters
 - <strong>Training-set property distributions</strong> as mini histograms — click <strong>Expand</strong> on any histogram to see a full-size chart with axis ticks. These distributions tell you what property ranges the model has seen, which helps you choose realistic CFG targets.</p>
-<!-- screenshot: generation models panel — one model selected, model details open showing histograms -->
-<p><img alt="Model details and histograms" src="../assets/screenshots/generation_model_details.png" /></p>
 <h3 id="2-configure-parameters">2. Configure parameters</h3>
 <p>See the <a href="#parameter-reference">parameter reference</a> below.</p>
 <h3 id="3-run">3. Run</h3>
@@ -1239,8 +1237,6 @@
 <li><strong>All</strong> button: load the first 9 molecules at once.</li>
 <li><strong>Reset</strong> button: clear all displayed molecules.</li>
 </ul>
-<!-- screenshot: generation results panel — 3 panes showing different molecules, split=3 -->
-<p><img alt="Multi-molecule split view" src="../assets/screenshots/generation_split_view.png" /></p>
 <p>In each pane:</p>
 <ul>
 <li><strong>Rotate</strong>: left-click drag · <strong>Zoom</strong>: scroll wheel</li>
@@ -1352,6 +1348,8 @@
 <li><strong>1</strong>: mild guidance; the model balances diversity with property steering.</li>
 <li><strong>2–5</strong>: stronger guidance; output properties are closer to the targets but structural diversity decreases. Values above 3 can produce geometrically strained structures.</li>
 </ul>
+<p>!!! note "Guidance quality trade-off"
+    Increasing CFG scale strengthens property steering but typically reduces the fraction of generated structures that pass geometric validity checks (e.g. PoseBuster). This trade-off is sensitive to how the model was trained: models with MAD-normalized property targets tend to retain higher structural quality at equivalent CFG strengths compared to models trained with fixed-scale normalization. Check the training-set property histograms (visible in <strong>Show Model Details</strong>) to choose a realistic target value — requesting a property far outside the training distribution reduces both guidance effectiveness and structural quality.</p>
 <p>For each property the model was trained with:</p>
 <table>
 <thead>
@@ -1383,8 +1381,6 @@
 <li><strong>Denoising</strong>: plays back the full reverse-diffusion trajectory as an animated GIF — each frame is one captured denoising step, letting you observe how the point cloud collapses from noise into a molecule.</li>
 </ul>
 <p>The GIF is rendered server-side; a "Rendering…" message appears while it loads.</p>
-<!-- screenshot: one result pane in Denoising mode showing the animated GIF -->
-<p><img alt="Denoising trajectory playback" src="../assets/screenshots/generation_trajectory.png" /></p>
 <hr />
 <h2 id="configuration-presets">Configuration presets</h2>
 <p>See <a href="presets/">Presets</a> — save and restore the full parameter state for any generation configuration.</p>

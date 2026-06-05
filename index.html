@@ -571,6 +571,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#system-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        System architecture
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#background-and-key-concepts" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1085,9 +1096,6 @@
 
 <h1 id="automaticmolcraft">AutomaticMolCraft</h1>
 <p><strong>AutomaticMolCraft</strong> is a browser-based platform for 3D molecular generative design built on <a href="https://github.com/pregHosh/MolCraftDiffusion">MolCraftDiffusion</a>. It runs entirely locally — no cloud account or scripting required.</p>
-<!-- screenshot: top-level — full app with all 7 tabs visible in the tab bar -->
-<!-- ![App overview](assets/screenshots/app_overview.png) -->
-
 <h2 id="what-it-covers">What it covers</h2>
 <table>
 <thead>
@@ -1107,7 +1115,7 @@
 </tr>
 <tr>
 <td><strong>Data Manager</strong></td>
-<td>Load, merge, and export multi-source molecular datasets</td>
+<td>Load, stage, merge, compute derived columns, and export multi-source molecular datasets</td>
 </tr>
 <tr>
 <td><strong>Analysis Tools</strong></td>
@@ -1118,11 +1126,19 @@
 <td>Explore chemical space in linked scatter plots, histograms, and a 3D structure viewer</td>
 </tr>
 <tr>
+<td><strong>Model Training</strong></td>
+<td>Configure and queue MolCraftDiffusion training and fine-tuning jobs from the browser</td>
+</tr>
+<tr>
 <td><strong>Plug-in Tools</strong></td>
 <td>Connect external property predictors without touching backend code</td>
 </tr>
 </tbody>
 </table>
+<h2 id="system-architecture">System architecture</h2>
+<p><img alt="AutomaticMolCraft system architecture" src="assets/architecture_diagram.svg" /></p>
+<p><em>The browser-based React/TypeScript frontend communicates with a FastAPI backend that manages datasets, model discovery, generation jobs, analysis jobs, exports, and external tool execution. MolCraftDiffusion provides the model-training, sampling, and molecular-analysis routines exposed through the WebUI.</em></p>
+<hr />
 <h2 id="background-and-key-concepts">Background and key concepts</h2>
 <h3 id="3d-molecular-generative-models">3D molecular generative models</h3>
 <p>Most molecular generative models work with 2D graph or string (SMILES) representations. <strong>3D generative models</strong> instead assign each atom explicit Cartesian coordinates, producing complete atomic geometries directly. This matters because most molecular properties — electronic structure, reactivity, binding pose — depend on 3D shape, not just connectivity. By operating in Cartesian space, these models can encode geometric and physicochemical constraints directly into the generation process.</p>
