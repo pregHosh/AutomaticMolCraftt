@@ -21,7 +21,7 @@
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
       
@@ -29,7 +29,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
       
         
         <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
@@ -1241,7 +1241,9 @@
 
 
 <h1 id="model-training">Model Training</h1>
-<p>The <strong>Model Training</strong> tab exposes the full MolCraftDiffusion training pipeline from the browser.</p>
+<p>The <strong>Model training</strong> tab exposes the full MolCraftDiffusion training pipeline from the browser.</p>
+<p>!!! note "Extended task families"
+    Some task families are hidden by default. If the server sets <code>MOLCRAFT_UNLOCK_PASSWORD</code> (see <a href="../installation/">Installation</a>), an unlock field appears above the form — enter the password and click <strong>Unlock</strong> to reveal the extended families ("Extended models unlocked" is shown on success). The public families work without unlocking.</p>
 <h2 id="layout">Layout</h2>
 <table>
 <thead>
@@ -1312,16 +1314,19 @@
 <thead>
 <tr>
 <th>Mode</th>
+<th>Submit button</th>
 <th>Effect</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><strong>Run</strong></td>
+<td><strong>Queue training job</strong></td>
 <td>Queues a real training job; the backend launches the training process and streams logs</td>
 </tr>
 <tr>
 <td><strong>Dry</strong></td>
+<td><strong>Generate YAML</strong></td>
 <td>Generates and validates the YAML configuration only — no training runs. The YAML is shown inline with a <strong>Copy command</strong> button and a <strong>Download YAML</strong> button</td>
 </tr>
 </tbody>
@@ -1996,7 +2001,7 @@
       <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "toc.integrate", "search.suggest", "content.tooltips"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
       
     
   </body>

@@ -21,7 +21,7 @@
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
       
@@ -29,7 +29,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
       
         
         <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
@@ -676,6 +676,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#keyboard-shortcuts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Keyboard shortcuts
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#top-bar" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1070,7 +1081,7 @@
 
 <h1 id="ui-overview">UI Overview</h1>
 <h2 id="tab-bar">Tab bar</h2>
-<p>The tab bar runs across the top. Each tab is a self-contained workspace.</p>
+<p>The tab bar runs across the top. Each tab is a self-contained workspace. The app opens on the <strong>Management</strong> tab; the order below is the tab-bar order.</p>
 <table>
 <thead>
 <tr>
@@ -1122,8 +1133,8 @@
 
     subgraph GENERATE["Generate"]
         MT("Model training")
-        GEN("3D generation")
-        SG("Structure-guided")
+        GEN("3D molecule generation")
+        SG("Structure-directed generation")
     end
 
     subgraph CURATE["Curate"]
@@ -1144,14 +1155,42 @@
     MG -- "compiled dataset" --&gt; AT
     MG -- "compiled dataset" --&gt; PT
     MG -- "compiled dataset" --&gt; VIZ
-    AT -- "Apply result" --&gt; MG
-    PT -- "Apply result" --&gt; MG
+    AT -- "Apply results" --&gt; MG
+    PT -- "Apply results" --&gt; MG
 
     class MT,GEN,SG gen
     class MG cur
     class AT,PT,VIZ exp</code></pre>
 <p>The central hub is <strong>Management</strong>: generation outputs flow into it, analysis tools enrich it, and Visualization reads from it. Model training produces the checkpoint files that power both generation tabs.</p>
 <hr />
+<h2 id="keyboard-shortcuts">Keyboard shortcuts</h2>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>1</code>–<code>7</code></td>
+<td>Switch to the corresponding tab (tab-bar order above)</td>
+</tr>
+<tr>
+<td><code>?</code></td>
+<td>Show / hide the keyboard-shortcuts overlay</td>
+</tr>
+<tr>
+<td><code>Esc</code></td>
+<td>Close dialogs and overlays</td>
+</tr>
+<tr>
+<td><code>Shift+Enter</code></td>
+<td>Submit a generation job (generation tabs only)</td>
+</tr>
+</tbody>
+</table>
+<p>Number shortcuts are ignored while a text field is focused.</p>
 <h2 id="top-bar">Top bar</h2>
 <p>The <strong>theme selector</strong> (top-right) cycles through six visual themes (Cosmos, Arctic, Neon Bio, Amber Lab, EPFL, Arcane Study). The choice is saved to browser local storage.</p>
 <h2 id="toast-notifications">Toast notifications</h2>
@@ -1216,7 +1255,7 @@
       <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "toc.integrate", "search.suggest", "content.tooltips"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
       
     
   </body>

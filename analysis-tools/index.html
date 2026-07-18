@@ -21,7 +21,7 @@
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
       
@@ -29,7 +29,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
       
         
         <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
@@ -1124,21 +1124,21 @@
     A compiled dataset must be present (loaded via the <a href="../data-manager/">Data Manager</a>) before running any tool.</p>
 <hr />
 <h2 id="general-workflow">General workflow</h2>
+<p>The tab is organized around a step queue:</p>
 <ol>
-<li><strong>Select a tool</strong> from the list on the left.</li>
-<li><strong>Configure parameters</strong> in the panel on the right.</li>
-<li>Click <strong>Run</strong> to queue the job. Jobs execute one at a time in a background queue; you can navigate to other tabs while waiting.</li>
-<li>When the status changes to <code>completed</code>, click <strong>Apply</strong> to merge the result into the active dataset.</li>
-<li>Optionally click <strong>Register as new source</strong> to add the result as a staged source in the Data Manager (useful for geometry optimization outputs or featurizations you want to export separately).</li>
+<li><strong><code>1</code> Settings</strong> — pick the <strong>Analysis tool</strong> and the <strong>Analysis source</strong> (which dataset/staged source to run on).</li>
+<li><strong><code>2</code> Parameters</strong> — configure the tool's parameters, then click <strong>Add to queue</strong>. Repeat to chain several steps (e.g. XYZ to SMILES → validity → xTB).</li>
+<li>Each queued step has a <strong>Post action</strong>: <strong>No post-action</strong>, <strong>Apply results</strong> (merge new columns into the dataset when the step completes), or <strong>Register optimized set</strong> (add the result as a staged source in the Data Manager — used for geometry optimization outputs).</li>
+<li>In the <strong>Workflow</strong> panel, click <strong>Run</strong>. Steps execute one at a time as background jobs; you can navigate to other tabs while waiting. <strong>Pause</strong>, <strong>Cancel active</strong>, and <strong>Clear workflow</strong> control the run; a paused or failed workflow shows <strong>Resume</strong> instead of Run.</li>
+<li>Completed jobs appear in the <strong>Analysis queue</strong> panel with a status badge (<code>queued / running / completed / failed / cancelled</code>) and a log/terminal button to inspect the raw output. If a step ran without a post action, you can still click <strong>Apply results</strong> (or <strong>Apply all results</strong>) or <strong>Register optimized set</strong> there afterwards.</li>
 </ol>
-<p>Each job in the queue shows its tool name, status badge (<code>queued / running / completed / failed / cancelled</code>), and a log/terminal button to inspect the raw output.</p>
-<p><strong>Cancelling</strong>: click the stop button on a running job to cancel it. Queued jobs can be removed before they start.</p>
+<p><strong>Cancelling</strong>: click <strong>Cancel</strong> on a queued or running job. <strong>Clear queue</strong> removes finished jobs from the list.</p>
 <hr />
 <h2 id="recommended-run-order">Recommended run order</h2>
 <p>Many tools depend on outputs from earlier ones:</p>
 <ol>
 <li><strong>XYZ to SMILES</strong> — produces the <code>smiles</code> column required by validity checks and similarity filters.</li>
-<li><strong>Validity and connectivity</strong> — use SMILES + XYZ to flag bad geometries; filter these out before expensive calculations.</li>
+<li><strong>Validity and connectivity metrics</strong> — use SMILES + XYZ to flag bad geometries; filter these out before expensive calculations.</li>
 <li><strong>XTB geometry optimization</strong> <em>(optional)</em> — replace raw geometries with optimized ones before running single-point calculations.</li>
 <li><strong>XTB electronic properties</strong> — single-point calculations on the (optionally optimized) geometries.</li>
 <li><strong>Featurize</strong> — compute SOAP or UMA vectors.</li>
@@ -1413,8 +1413,8 @@
 </tbody>
 </table>
 <p>After the job completes, choose:
-- <strong>Replace in-place</strong> — overwrites the current XYZ geometries for those molecule IDs.
-- <strong>Register as new source</strong> — keeps the original geometries and adds optimized ones as a separate source with a new label.</p>
+- <strong>Apply results</strong> — overwrites the current XYZ geometries for those molecule IDs in-place.
+- <strong>Register optimized set</strong> — keeps the original geometries and adds optimized ones as a separate staged source with a new label.</p>
 <hr />
 <h3 id="featurize">Featurize</h3>
 <p>Computes a fixed-length numeric vector for each molecule, used as input for dimensionality reduction or external ML models.</p>
@@ -1707,7 +1707,7 @@
       <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "toc.integrate", "search.suggest", "content.tooltips"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
       
     
   </body>
