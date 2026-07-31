@@ -1106,12 +1106,17 @@ conda<span class="w"> </span>activate<span class="w"> </span>molcraft
 </code></pre></div>
 <p><code>xtb</code> is a semi-empirical quantum chemistry package (used in <a href="../analysis-tools/">Analysis Tools</a>). <code>openbabel</code> handles 2D structure rendering in the app.</p>
 <h2 id="2-install-molcraftdiffusion">2. Install MolCraftDiffusion</h2>
+<p><strong>Requires MolCraftDiffusion &gt;= 1.6.0.</strong> The app names Hydra config groups (<code>tasks</code>,
+<code>interference</code>) and CLI options that older releases do not ship; on an older package a
+generation or training job fails partway through with a <code>MissingConfigException</code> rather
+than failing at startup. After installing, <code>curl localhost:8000/healthz</code> reports
+<code>molcraft_version</code> and <code>molcraft_version_ok</code>.</p>
 <p><strong>GPU (CUDA 12.4, PyTorch 2.6):</strong></p>
-<div class="highlight"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>molcraftdiffusion<span class="o">[</span>gpu<span class="o">]</span><span class="w"> </span><span class="se">\</span>
+<div class="highlight"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span><span class="s1">&#39;molcraftdiffusion[gpu]&gt;=1.6.0&#39;</span><span class="w"> </span><span class="se">\</span>
 <span class="w">    </span>--find-links<span class="w"> </span>https://data.pyg.org/whl/torch-2.6.0+cu124.html
 </code></pre></div>
 <p><strong>CPU-only:</strong></p>
-<div class="highlight"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>molcraftdiffusion<span class="o">[</span>cpu<span class="o">]</span><span class="w"> </span><span class="se">\</span>
+<div class="highlight"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span><span class="s1">&#39;molcraftdiffusion[cpu]&gt;=1.6.0&#39;</span><span class="w"> </span><span class="se">\</span>
 <span class="w">    </span>--extra-index-url<span class="w"> </span>https://download.pytorch.org/whl/cpu<span class="w"> </span><span class="se">\</span>
 <span class="w">    </span>--find-links<span class="w"> </span>https://data.pyg.org/whl/torch-2.6.0+cpu.html
 </code></pre></div>
