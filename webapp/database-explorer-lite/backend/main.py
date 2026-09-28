@@ -32,6 +32,7 @@ from fastapi.responses import PlainTextResponse, JSONResponse, Response, FileRes
 from fastapi.staticfiles import StaticFiles
 
 from tool_runtime import discover_tools, run_tool, ToolError
+from plugins import discover_plugins, plugin_command
 from training_config import (
     TASK_FAMILIES,
     PUBLIC_TASK_FAMILIES,
@@ -3302,6 +3303,11 @@ ANALYSIS_TOOLS: dict[str, dict[str, Any]] = {
 }
 
 
+def _analysis_all_tools() -> dict[str, dict[str, Any]]:
+    """Built-in analysis tools plus external command plugins."""
+    return {**ANALYSIS_TOOLS, **discover_plugins(ANALYSIS_TOOLS.keys())[0]}
+
+
 def _analysis_public_tool(tool: dict[str, Any]) -> dict[str, Any]:
     public_inputs = [dict(input_spec) for input_spec in tool.get("inputs", [])]
     metadata: dict[str, Any] = {}
@@ -3335,7 +3341,8 @@ def _analysis_public_tool(tool: dict[str, Any]) -> dict[str, Any]:
 @app.get("/analysis-tools")
 def list_analysis_tools():
     return {
-        "tools": [_analysis_public_tool(t) for t in ANALYSIS_TOOLS.values()],
+        "tools": [_analysis_public_tool(t) for t in _analysis_all_tools().values()],
+        "plugin_errors": discover_plugins(ANALYSIS_TOOLS.keys())[1],
         "work_dir": str(ANALYSIS_WORK_DIR),
         "molcraft_cmd": MOLCRAFT_CMD,
         "backend_version": ANALYSIS_BACKEND_VERSION,
@@ -3865,6 +3872,7 @@ def _analysis_outputs_from_csv(
     csv_path: Path,
     stem_to_id: dict[str, str],
     prefix: str,
+    skip_columns: list[str] | None = None,
 ) -> tuple[list[dict[str, Any]], list[dict[str, Any]], list[dict[str, Any]], list[dict[str, Any]], dict[str, Any]]:
     """
     Convert MolCraftDiffusion CSV output into app-native outputs.
@@ -3906,6 +3914,7 @@ def _analysis_outputs_from_csv(
         "source_file",
         "source",
         "frame",
+        *(skip_columns or []),
     }
     raw_by_col: dict[str, list[Any]] = {}
     kind_by_col: dict[str, str] = {}
@@ -3947,7 +3956,8 @@ def _analysis_outputs_from_csv(
                 raw_by_col[out_name] = [None] * len(ids)
                 kind_by_col[out_name] = "numeric"
             kind, value = _analysis_parse_scalar(raw_value)
-            if kind != "numeric":
+            # Empty cells (failed molecules) must not demote a numeric column.
+            if kind != "numeric" and value is not None:
                 kind_by_col[out_name] = "categorical"
             raw_by_col[out_name][target_i] = value
 
@@ -5281,7 +5291,7 @@ def _analysis_dimensionality_reduction_result(
 
 
 def _analysis_execute_tool(tool_id: str, payload: AnalysisToolRunRequest, job_id: str | None = None):
-    tool = ANALYSIS_TOOLS.get(tool_id)
+    tool = _analysis_all_tools().get(tool_id)
     if tool is None:
         raise HTTPException(status_code=404, detail=f"Analysis tool not found: {tool_id}")
 
@@ -5374,7 +5384,10 @@ def _analysis_execute_tool(tool_id: str, payload: AnalysisToolRunRequest, job_id
             }
 
         stem_to_id = _analysis_stage_xyz(payload.dataset, rows_to_run, xyz_dir)
-        cmd, expected_csv = _analysis_cmd_for_tool(tool_id, payload.params or {}, xyz_dir, job_dir)
+        if "plugin" in tool:
+            cmd, expected_csv = plugin_command(tool, payload.params or {}, xyz_dir, job_dir)
+        else:
+            cmd, expected_csv = _analysis_cmd_for_tool(tool_id, payload.params or {}, xyz_dir, job_dir)
         return_code, log_text = _analysis_run_command(cmd, job_dir, job_id=job_id)
         if return_code != 0:
             raise HTTPException(
@@ -5576,7 +5589,11 @@ def _analysis_execute_tool(tool_id: str, payload: AnalysisToolRunRequest, job_id
             }
 
         add_columns, add_descriptors, add_molecular_vectors, add_atom_properties, parse_stats = _analysis_outputs_from_csv(
-            payload.dataset, csv_path, stem_to_id, prefix=tool_id
+            payload.dataset,
+            csv_path,
+            stem_to_id,
+            prefix=tool_id,
+            skip_columns=tool.get("plugin", {}).get("ignoreColumns"),
         )
         # Staged XYZ diagnostics are intentionally not added during normal runs.
         parse_stats = {**parse_stats}
@@ -5899,7 +5916,7 @@ def run_analysis_tool(tool_id: str, payload: AnalysisToolRunRequest):
 
 @app.post("/analysis-tools/{tool_id}/jobs")
 def create_analysis_job(tool_id: str, payload: AnalysisToolRunRequest):
-    tool = ANALYSIS_TOOLS.get(tool_id)
+    tool = _analysis_all_tools().get(tool_id)
     if tool is None:
         raise HTTPException(status_code=404, detail=f"Analysis tool not found: {tool_id}")
 

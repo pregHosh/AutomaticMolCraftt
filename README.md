@@ -36,7 +36,7 @@ A browser-based platform for the full 3D molecular generative design pipeline: r
 | **Multi-source data curation** | Stage and compile CSV+XYZ, ASE `.db`, and generation-job outputs into one dataset |
 | **Analysis pipeline** | Async jobs for validity/connectivity checks, XTB properties and geometry optimization, featurization, dimensionality reduction, and property prediction |
 | **Linked visualization** | 2D/3D scatter, histograms, and a 3D molecule viewer sharing one selection state, GPU-rendered via deck.gl |
-| **Plug-in tools** | Wire in external property predictors by dropping a `manifest.json` + `runner.py` — no backend changes needed |
+| **Plug-in tools** | Turn your own XYZ → CSV evaluation script into an Analysis tool by putting a `plugin.json` next to it (example: [`plugins/nhc_buried_volume`](plugins/nhc_buried_volume/) for NHC buried volume/octants/quadrants), or add in-process tools via `manifest.json` + `runner.py` |
 
 ## Installation
 

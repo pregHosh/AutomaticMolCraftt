@@ -10,6 +10,11 @@ The **Analysis tools** tab enriches the loaded dataset by running computations a
 
 *The Analysis tools workspace: pick a tool and source under Settings, configure its parameters, then queue and run the step.*
 
+!!! tip "Your own scripts as analysis tools"
+    Any script that reads a folder of XYZ files and writes a CSV can be added to this tab as an
+    [external command plugin](plugin-tools.md#external-command-plugins) — no changes to the script or the app.
+    The shipped example `plugins/nhc_buried_volume/` computes NHC buried volume, octants and quadrants.
+
 ---
 
 ## General workflow

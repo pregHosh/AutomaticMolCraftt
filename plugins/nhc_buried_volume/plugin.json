@@ -1,0 +1,70 @@
+{
+  "id": "nhc_buried_volume",
+  "name": "NHC buried volume (Morfeus)",
+  "description": "Steric descriptors of N-heterocyclic carbenes with Morfeus: %Vbur, octant and quadrant %Vbur, N-C-N angle and Sterimol L/B1/B5. The sphere is centered on a dummy metal placed along the N-C-N bisector. XYZ convention: atoms 1-3 must be N, C (carbene), N; other molecules get an 'error' entry instead of values. Requires morfeus-ml in the plugin's Python env.",
+  "command": [
+    "{python}", "{plugin_dir}/nhc_buried_volume.py",
+    "-i", "{xyz_dir}", "-o", "{output_csv}", "--include-opt"
+  ],
+  "ignoreColumns": [
+    "n_atoms", "bisector", "center_distance_A", "sphere_radius_A",
+    "radii_type", "radii_scale", "include_hs",
+    "center_x", "center_y", "center_z",
+    "direction_x", "direction_y", "direction_z",
+    "fraction_buried_volume", "free_volume_A3", "sterimol_bond_len"
+  ],
+  "inputs": [
+    {
+      "key": "distance",
+      "label": "Metal-carbene distance (Å)",
+      "type": "float",
+      "default": 2.0,
+      "arg": "--distance"
+    },
+    {
+      "key": "sphere_radius",
+      "label": "Sphere radius (Å)",
+      "type": "float",
+      "default": 3.5,
+      "arg": "--sphere-radius"
+    },
+    {
+      "key": "bisector",
+      "label": "N-C-N bisector",
+      "type": "select",
+      "options": ["external", "internal"],
+      "default": "external",
+      "arg": "--bisector",
+      "help": "External points away from the N-C-N ring (usual metal position)."
+    },
+    {
+      "key": "radii_type",
+      "label": "vdW radii",
+      "type": "select",
+      "options": ["bondi", "crc", "alvarez", "truhlar", "rahm", "pyykko"],
+      "default": "bondi",
+      "arg": "--radii-type"
+    },
+    {
+      "key": "radii_scale",
+      "label": "Radii scale",
+      "type": "float",
+      "default": 1.17,
+      "arg": "--radii-scale"
+    },
+    {
+      "key": "density",
+      "label": "Point density (Å³ per point)",
+      "type": "float",
+      "default": 0.001,
+      "arg": "--density"
+    },
+    {
+      "key": "exclude_hs",
+      "label": "Exclude hydrogens",
+      "type": "boolean",
+      "default": false,
+      "arg": "--exclude-hs"
+    }
+  ]
+}

@@ -242,6 +242,7 @@ your shell take precedence.
 |---|---|---|
 | `MOLCRAFT_MODELS_DIR` | `<repo>/models` | Where the app looks for model checkpoints |
 | `MOLCRAFT_OUTPUTS_DIR` | `<repo>/outputs` | Where generation and training job outputs are written |
+| `MOLCRAFT_PLUGINS_DIR` | `<repo>/plugins` | Folders scanned for [external command plugins](plugin-tools.md#external-command-plugins) (`:`-separated) |
 | `MOLCRAFT_ANALYSIS_WORK_DIR` | `<repo>/analysis_jobs` | Storage for async analysis jobs |
 | `MOLCRAFT_PRESETS_DIR` | `<repo>/presets` | Persistent parameter presets |
 | `MOLCRAFT_TRAIN_DB` | `<backend>/training_jobs.db` | SQLite file holding the training job list |
