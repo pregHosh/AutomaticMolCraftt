@@ -1266,6 +1266,12 @@
 </div>
 <p><img alt="Analysis tools workspace" src="../assets/screenshots/analysis_tab.png" /></p>
 <p><em>The Analysis tools workspace: pick a tool and source under Settings, configure its parameters, then queue and run the step.</em></p>
+<div class="admonition tip">
+<p class="admonition-title">Your own scripts as analysis tools</p>
+<p>Any script that reads a folder of XYZ files and writes a CSV can be added to this tab as an
+<a href="../plugin-tools/#external-command-plugins">external command plugin</a> — no changes to the script or the app.
+The shipped example <code>plugins/nhc_buried_volume/</code> computes NHC buried volume, octants and quadrants.</p>
+</div>
 <hr />
 <h2 id="general-workflow">General workflow<a class="headerlink" href="#general-workflow" title="Permanent link">&para;</a></h2>
 <p>The tab is organized around a step queue:</p>

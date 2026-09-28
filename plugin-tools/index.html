@@ -946,6 +946,79 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#external-command-plugins" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        External command plugins
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="External command plugins">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#where-plugins-live" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Where plugins live
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#worked-example-nhc-buried-volume" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Worked example: NHC buried volume
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pluginjson-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        plugin.json reference
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-the-script-must-produce" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What the script must produce
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#in-process-tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        In-process tools
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="In-process tools">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
   <a href="#using-a-plug-in" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -955,8 +1028,8 @@
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
+        
+          <li class="md-nav__item">
   <a href="#adding-a-plug-in" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -987,6 +1060,11 @@
       
     </span>
   </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
         
@@ -1057,6 +1135,79 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#external-command-plugins" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        External command plugins
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="External command plugins">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#where-plugins-live" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Where plugins live
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#worked-example-nhc-buried-volume" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Worked example: NHC buried volume
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pluginjson-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        plugin.json reference
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-the-script-must-produce" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What the script must produce
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#in-process-tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        In-process tools
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="In-process tools">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
   <a href="#using-a-plug-in" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1066,8 +1217,8 @@
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
+        
+          <li class="md-nav__item">
   <a href="#adding-a-plug-in" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1105,6 +1256,11 @@
     </nav>
   
 </li>
+        
+      </ul>
+    </nav>
+  
+</li>
       
     </ul>
   
@@ -1127,43 +1283,229 @@
 
 
 <h1 id="plug-in-tools">Plug-in Tools<a class="headerlink" href="#plug-in-tools" title="Permanent link">&para;</a></h1>
+<p>There are two ways to plug your own property evaluation into the app:</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><strong>External command plugins</strong> (recommended)</th>
+<th><strong>In-process tools</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Lives in</td>
+<td>any folder you choose, outside the package</td>
+<td><code>backend/tools/&lt;id&gt;/</code> inside the package</td>
+</tr>
+<tr>
+<td>You write</td>
+<td>a <code>plugin.json</code> next to your <strong>unchanged</strong> script</td>
+<td>a <code>runner.py</code> adapter using the app's Python API</td>
+</tr>
+<tr>
+<td>Runs as</td>
+<td>a background job in the <strong>Analysis tools</strong> tab (log, cancel, queue, apply)</td>
+<td>a synchronous call in the <strong>Plug-in tools</strong> tab</td>
+</tr>
+<tr>
+<td>Python env</td>
+<td>any (set <code>"python"</code> to another conda env)</td>
+<td>the backend's env</td>
+</tr>
+<tr>
+<td>Fits</td>
+<td>eval scripts that take a folder of XYZ files and write a CSV</td>
+<td>quick in-memory transforms (e.g. PCA of existing columns)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="external-command-plugins">External command plugins<a class="headerlink" href="#external-command-plugins" title="Permanent link">&para;</a></h2>
+<p>If your script already looks like <code>my_eval.py -i &lt;xyz folder&gt; -o &lt;result.csv&gt;</code>, it can become a plugin
+without changing a line of it. The backend writes the selected molecules as <code>.xyz</code> files into a job folder,
+runs your command, and merges the CSV back into the dataset by molecule ID.</p>
+<h3 id="where-plugins-live">Where plugins live<a class="headerlink" href="#where-plugins-live" title="Permanent link">&para;</a></h3>
+<p>The backend scans every folder in <code>MOLCRAFT_PLUGINS_DIR</code> for <code>*/plugin.json</code> (several folders are separated by
+<code>:</code> on Linux/macOS or <code>;</code> on Windows). The default is <code>&lt;repo_root&gt;/plugins</code>. You can set the variable in any of the
+<code>.env</code> files described in <a href="../installation/">Installation</a>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nv">MOLCRAFT_PLUGINS_DIR</span><span class="o">=</span>/home/me/my_plugins:/shared/group_plugins
+</code></pre></div>
+<p>The folders are re-scanned whenever the Analysis tools tab loads its tool list, so a new plugin shows up after a
+page reload, without restarting the backend. Manifests that fail to load are reported in the <code>plugin_errors</code> field
+of <code>GET /analysis-tools</code>.</p>
+<h3 id="worked-example-nhc-buried-volume">Worked example: NHC buried volume<a class="headerlink" href="#worked-example-nhc-buried-volume" title="Permanent link">&para;</a></h3>
+<p>The repository ships <code>plugins/nhc_buried_volume/</code> as a complete example. It computes %V<sub>bur</sub>,
+octant and quadrant %V<sub>bur</sub>, the N–C–N angle and Sterimol parameters of N-heterocyclic carbenes with
+<a href="https://digital-chemistry-laboratory.github.io/morfeus/">Morfeus</a>. The sphere is centered on a dummy metal atom
+placed along the N–C–N bisector.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>plugins/nhc_buried_volume/
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>  plugin.json             ← how to call the script + UI inputs
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>  nhc_buried_volume.py    ← the original stand-alone script, unchanged
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>  examples/*.xyz          ← three NHCs to try it on
+</code></pre></div>
+<p>The script is an ordinary CLI (<code>python nhc_buried_volume.py -i refs/ -o out.csv --distance 2.0 ...</code>) that expects
+atoms 1–3 of each XYZ to be N, C (carbene), N. Its <code>plugin.json</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="p">{</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">  </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"nhc_buried_volume"</span><span class="p">,</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">  </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"NHC buried volume (Morfeus)"</span><span class="p">,</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">  </span><span class="nt">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Steric descriptors of N-heterocyclic carbenes ..."</span><span class="p">,</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">  </span><span class="nt">"command"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">    </span><span class="s2">"{python}"</span><span class="p">,</span><span class="w"> </span><span class="s2">"{plugin_dir}/nhc_buried_volume.py"</span><span class="p">,</span>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">    </span><span class="s2">"-i"</span><span class="p">,</span><span class="w"> </span><span class="s2">"{xyz_dir}"</span><span class="p">,</span><span class="w"> </span><span class="s2">"-o"</span><span class="p">,</span><span class="w"> </span><span class="s2">"{output_csv}"</span><span class="p">,</span><span class="w"> </span><span class="s2">"--include-opt"</span>
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">  </span><span class="p">],</span>
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="w">  </span><span class="nt">"ignoreColumns"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"bisector"</span><span class="p">,</span><span class="w"> </span><span class="s2">"center_x"</span><span class="p">,</span><span class="w"> </span><span class="s2">"center_y"</span><span class="p">,</span><span class="w"> </span><span class="s2">"center_z"</span><span class="p">,</span><span class="w"> </span><span class="s2">"..."</span><span class="p">],</span>
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="w">  </span><span class="nt">"inputs"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="nt">"key"</span><span class="p">:</span><span class="w"> </span><span class="s2">"distance"</span><span class="p">,</span><span class="w"> </span><span class="nt">"label"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Metal-carbene distance (Å)"</span><span class="p">,</span><span class="w"> </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"float"</span><span class="p">,</span><span class="w"> </span><span class="nt">"default"</span><span class="p">:</span><span class="w"> </span><span class="mf">2.0</span><span class="p">,</span><span class="w"> </span><span class="nt">"arg"</span><span class="p">:</span><span class="w"> </span><span class="s2">"--distance"</span><span class="w"> </span><span class="p">},</span>
+<a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="nt">"key"</span><span class="p">:</span><span class="w"> </span><span class="s2">"bisector"</span><span class="p">,</span><span class="w"> </span><span class="nt">"label"</span><span class="p">:</span><span class="w"> </span><span class="s2">"N-C-N bisector"</span><span class="p">,</span><span class="w"> </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"select"</span><span class="p">,</span>
+<a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a><span class="w">      </span><span class="nt">"options"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"external"</span><span class="p">,</span><span class="w"> </span><span class="s2">"internal"</span><span class="p">],</span><span class="w"> </span><span class="nt">"default"</span><span class="p">:</span><span class="w"> </span><span class="s2">"external"</span><span class="p">,</span><span class="w"> </span><span class="nt">"arg"</span><span class="p">:</span><span class="w"> </span><span class="s2">"--bisector"</span><span class="w"> </span><span class="p">},</span>
+<a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a><span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="nt">"key"</span><span class="p">:</span><span class="w"> </span><span class="s2">"exclude_hs"</span><span class="p">,</span><span class="w"> </span><span class="nt">"label"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Exclude hydrogens"</span><span class="p">,</span><span class="w"> </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"boolean"</span><span class="p">,</span><span class="w"> </span><span class="nt">"default"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w"> </span><span class="nt">"arg"</span><span class="p">:</span><span class="w"> </span><span class="s2">"--exclude-hs"</span><span class="w"> </span><span class="p">}</span>
+<a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a><span class="w">  </span><span class="p">]</span>
+<a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a><span class="p">}</span>
+</code></pre></div>
+<p>To use it:</p>
+<ol>
+<li>Install the script's dependency into the backend env: <code>pip install morfeus-ml</code> (it is already listed in
+   <code>environment.yml</code>).</li>
+<li>Load a dataset whose XYZ files are NHCs. For a quick try, use the files in <code>plugins/nhc_buried_volume/examples/</code>.</li>
+<li>In <strong>Analysis tools</strong>, pick <strong>NHC buried volume (Morfeus)</strong>, set the parameters, and <strong>Add to queue</strong> → <strong>Run</strong>.</li>
+<li>When the job completes, <strong>Apply results</strong> adds <code>percent_buried_volume</code>, <code>oct_0_pVbur</code> … <code>oct_7_pVbur</code>,
+   <code>quad_1_pVbur</code> … <code>quad_4_pVbur</code>, <code>sterimol_L</code>/<code>B1</code>/<code>B5</code> and related columns. Molecules that fail (e.g. not N–C–N
+   first) get empty values plus a text entry in the <code>error</code> column.</li>
+</ol>
+<h3 id="pluginjson-reference"><code>plugin.json</code> reference<a class="headerlink" href="#pluginjson-reference" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Required</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>yes</td>
+<td>Unique tool id. Must not clash with a built-in analysis tool.</td>
+</tr>
+<tr>
+<td><code>name</code></td>
+<td>yes</td>
+<td>Label shown in the tool picker.</td>
+</tr>
+<tr>
+<td><code>description</code></td>
+<td>no</td>
+<td>Shown under the tool picker.</td>
+</tr>
+<tr>
+<td><code>command</code></td>
+<td>yes</td>
+<td>The argv list to run. Placeholders are substituted (see below).</td>
+</tr>
+<tr>
+<td><code>python</code></td>
+<td>no</td>
+<td>Interpreter used for <code>{python}</code>. The default is the backend's own Python. Point it at another conda env to keep the script's dependencies separate.</td>
+</tr>
+<tr>
+<td><code>inputs</code></td>
+<td>no</td>
+<td>UI fields, same schema as in-process tools (<code>string</code>, <code>float</code>, <code>integer</code>, <code>boolean</code>, <code>select</code>, …, with <code>label</code>, <code>default</code>, <code>options</code>, <code>help</code>), plus an optional <code>arg</code>.</td>
+</tr>
+<tr>
+<td><code>ignoreColumns</code></td>
+<td>no</td>
+<td>CSV columns not to add to the dataset (e.g. settings the script echoes on every row).</td>
+</tr>
+</tbody>
+</table>
+<p>Placeholders in <code>command</code>:</p>
+<table>
+<thead>
+<tr>
+<th>Placeholder</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>{python}</code></td>
+<td>the <code>python</code> field, or the backend's interpreter</td>
+</tr>
+<tr>
+<td><code>{plugin_dir}</code></td>
+<td>the folder containing <code>plugin.json</code></td>
+</tr>
+<tr>
+<td><code>{xyz_dir}</code></td>
+<td>the job folder holding the selected molecules as <code>.xyz</code> files</td>
+</tr>
+<tr>
+<td><code>{output_csv}</code></td>
+<td><code>&lt;job_dir&gt;/&lt;id&gt;.csv</code>, where the script should write its CSV</td>
+</tr>
+<tr>
+<td><code>{job_dir}</code></td>
+<td>the job's working folder (also the process's working directory)</td>
+</tr>
+<tr>
+<td><code>{&lt;input key&gt;}</code></td>
+<td>the value of that input, for scripts that take positional arguments</td>
+</tr>
+</tbody>
+</table>
+<p>Each input with an <code>arg</code> is appended to the command automatically: <code>arg value</code> for normal inputs, and just
+<code>arg</code> for a <code>boolean</code> that is true. Empty values are skipped.</p>
+<h3 id="what-the-script-must-produce">What the script must produce<a class="headerlink" href="#what-the-script-must-produce" title="Permanent link">&para;</a></h3>
+<ul>
+<li>A CSV at <code>{output_csv}</code>. If it isn't there, the backend uses the first <code>*.csv</code> it finds in the job folder.</li>
+<li>One row per molecule, with a column identifying the input file: any of <code>filename</code>, <code>file</code>, <code>path</code>, <code>xyz_file</code>,
+  <code>id</code>, <code>mol_id</code>, <code>name</code>. The value can be the file name, the full path, or the stem. The staged files are named
+  <code>mol_&lt;index&gt;__&lt;molecule id&gt;.xyz</code>, so read the names from the folder rather than assuming the dataset IDs.</li>
+<li>Every other column becomes a dataset column: numeric if all non-empty values parse as numbers, categorical
+  otherwise. Columns holding list-like vectors become descriptors. If a name already exists in the dataset, it is
+  prefixed with the plugin id.</li>
+<li>A non-zero exit code fails the job. Everything the script prints goes to the job log (terminal button in the
+  Analysis queue).</li>
+</ul>
+<h2 id="in-process-tools">In-process tools<a class="headerlink" href="#in-process-tools" title="Permanent link">&para;</a></h2>
 <p>The <strong>Plug-in tools</strong> tab exposes custom external property predictors — docking workflows, QSAR models, FEP surrogates, or any scoring function that can be wrapped in a Python function.</p>
-<h2 id="using-a-plug-in">Using a plug-in<a class="headerlink" href="#using-a-plug-in" title="Permanent link">&para;</a></h2>
+<h3 id="using-a-plug-in">Using a plug-in<a class="headerlink" href="#using-a-plug-in" title="Permanent link">&para;</a></h3>
 <ol>
 <li>Open the <strong>Plug-in tools</strong> tab.</li>
 <li>Select a tool from the list. Its input fields are rendered automatically from the manifest.</li>
 <li>Fill in the required parameters and click <strong>Run tool</strong>.</li>
 <li>Results are applied to the dataset: <code>add_columns</code> tools add new visible columns; <code>add_descriptor</code> tools store a hidden per-molecule vector and add a visible <code>true</code>/<code>false</code> presence column with the descriptor's name.</li>
 </ol>
-<h2 id="adding-a-plug-in">Adding a plug-in<a class="headerlink" href="#adding-a-plug-in" title="Permanent link">&para;</a></h2>
+<h3 id="adding-a-plug-in">Adding a plug-in<a class="headerlink" href="#adding-a-plug-in" title="Permanent link">&para;</a></h3>
 <p>Drop a directory under <code>webapp/database-explorer-lite/backend/tools/&lt;tool_id&gt;/</code> containing two files:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>&lt;tool_id&gt;/
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>  manifest.json       ← declares the tool's inputs and output format
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>  runner.py            ← defines run_tool(dataset, params), called in-process
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>  requirements.txt    ← optional, Python deps (not auto-installed — see below)
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>&lt;tool_id&gt;/
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>  manifest.json       ← declares the tool's inputs and output format
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>  runner.py            ← defines run_tool(dataset, params), called in-process
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>  requirements.txt    ← optional, Python deps (not auto-installed — see below)
 </code></pre></div>
 <p>The backend re-scans <code>backend/tools/</code> on every request to <code>/tools</code> and <code>/tools/{tool_id}/run</code>, so no backend restart is needed for it to execute a new tool. The tab's tool list, however, is normally built into the frontend bundle at build time (Vite glob-imports <code>backend/tools/*/manifest.json</code>); it only falls back to the live <code>/tools</code> endpoint when that bundled list is empty. In practice, rebuild the frontend (<code>npm run build</code>, or reload under <code>FRONTEND_DEV=1 ./dev.sh</code>) after adding a tool so it appears in the tab.</p>
 <p>If <code>requirements.txt</code> is present, install its packages manually into the backend's Python environment — the app does not install them automatically.</p>
-<h3 id="manifestjson-structure"><code>manifest.json</code> structure<a class="headerlink" href="#manifestjson-structure" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="p">{</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">  </span><span class="nt">"manifestVersion"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">  </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"my_tool"</span><span class="p">,</span>
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">  </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"My scoring function"</span><span class="p">,</span>
-<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">  </span><span class="nt">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"One-line description shown in the UI."</span><span class="p">,</span>
-<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">  </span><span class="nt">"needsXyz"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
-<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">  </span><span class="nt">"inputs"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">    </span><span class="p">{</span>
-<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">      </span><span class="nt">"key"</span><span class="p">:</span><span class="w"> </span><span class="s2">"threshold"</span><span class="p">,</span>
-<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="w">      </span><span class="nt">"label"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Score threshold"</span><span class="p">,</span>
-<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="w">      </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"float"</span><span class="p">,</span>
-<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="w">      </span><span class="nt">"default"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.5</span><span class="p">,</span>
-<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="w">      </span><span class="nt">"required"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
-<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="w">    </span><span class="p">}</span>
-<a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="w">  </span><span class="p">],</span>
-<a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a><span class="w">  </span><span class="nt">"output"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a><span class="w">    </span><span class="nt">"kind"</span><span class="p">:</span><span class="w"> </span><span class="s2">"add_columns"</span>
-<a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a><span class="w">  </span><span class="p">}</span>
-<a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a><span class="p">}</span>
+<h4 id="manifestjson-structure"><code>manifest.json</code> structure<a class="headerlink" href="#manifestjson-structure" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="p">{</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">  </span><span class="nt">"manifestVersion"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">  </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"my_tool"</span><span class="p">,</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">  </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"My scoring function"</span><span class="p">,</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">  </span><span class="nt">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"One-line description shown in the UI."</span><span class="p">,</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="w">  </span><span class="nt">"needsXyz"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="w">  </span><span class="nt">"inputs"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="w">    </span><span class="p">{</span>
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="w">      </span><span class="nt">"key"</span><span class="p">:</span><span class="w"> </span><span class="s2">"threshold"</span><span class="p">,</span>
+<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="w">      </span><span class="nt">"label"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Score threshold"</span><span class="p">,</span>
+<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="w">      </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"float"</span><span class="p">,</span>
+<a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a><span class="w">      </span><span class="nt">"default"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.5</span><span class="p">,</span>
+<a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a><span class="w">      </span><span class="nt">"required"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
+<a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a><span class="w">  </span><span class="p">],</span>
+<a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a><span class="w">  </span><span class="nt">"output"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a><span class="w">    </span><span class="nt">"kind"</span><span class="p">:</span><span class="w"> </span><span class="s2">"add_columns"</span>
+<a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a><span class="w">  </span><span class="p">}</span>
+<a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a><span class="p">}</span>
 </code></pre></div>
 <p><strong><code>output.kind</code></strong> is descriptive metadata shown alongside the tool; the backend actually decides how to apply results based on which keys (<code>addColumns</code> and/or <code>addDescriptor</code>) the runner's return value contains, not on this field. Set it to document intent:</p>
 <table>
@@ -1186,26 +1528,26 @@
 </table>
 <p><strong><code>needsXyz</code></strong>: if <code>true</code>, the frontend loads each molecule's XYZ text and sends it to the backend as <code>dataset.xyzById</code> (a dict of <code>mol_id → xyz text</code>). If omitted or <code>false</code>, <code>xyzById</code> is sent empty.</p>
 <p>See <code>webapp/database-explorer-lite/backend/tools/external_tool_manifest_reference.md</code> in the repository for the full list of supported input types (<code>string</code>, <code>text</code>, <code>integer</code>, <code>float</code>, <code>boolean</code>, <code>select</code>, <code>multiselect</code>, <code>slider_int</code>, <code>slider_float</code>, <code>column</code>, <code>column_multi</code>, <code>column_numeric</code>, <code>column_categorical</code>, <code>column_multi_numeric</code>, <code>column_multi_categorical</code>) and field properties (<code>options</code>, <code>min</code>/<code>max</code>/<code>step</code>, <code>help</code>).</p>
-<h3 id="runnerpy-contract"><code>runner.py</code> contract<a class="headerlink" href="#runnerpy-contract" title="Permanent link">&para;</a></h3>
+<h4 id="runnerpy-contract"><code>runner.py</code> contract<a class="headerlink" href="#runnerpy-contract" title="Permanent link">&para;</a></h4>
 <p>The backend imports <code>runner.py</code> as a Python module in-process (no subprocess, no CLI flags) and calls a required function:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">run_tool</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>    <span class="o">...</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">run_tool</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>    <span class="o">...</span>
 </code></pre></div>
 <p><code>dataset</code> is a dict with keys <code>ids</code>, <code>columns</code>, <code>meta</code>, <code>xyzById</code> (only populated when <code>needsXyz: true</code>), and <code>descriptors</code> (previously stored hidden descriptor vectors, keyed by descriptor name). <code>params</code> holds the user-filled values keyed by each input's <code>key</code>, coerced to the declared type.</p>
 <p>It must return a dict containing at least one of <code>message</code>, <code>warnings</code>, <code>addColumns</code>, <code>addDescriptor</code>, or <code>stats</code>. Minimal example that adds a new numeric column:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">run_tool</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>    <span class="n">ids</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"ids"</span><span class="p">,</span> <span class="p">[])</span>
-<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>    <span class="n">threshold</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"threshold"</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span>
-<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>
-<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>    <span class="c1"># ... compute one score per id ...</span>
-<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>    <span class="n">scores</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">ids</span><span class="p">]</span>
-<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>
-<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>    <span class="k">return</span> <span class="p">{</span>
-<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>        <span class="s2">"message"</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"Scored </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">ids</span><span class="p">)</span><span class="si">}</span><span class="s2"> molecules."</span><span class="p">,</span>
-<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>        <span class="s2">"addColumns"</span><span class="p">:</span> <span class="p">[</span>
-<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>            <span class="p">{</span><span class="s2">"name"</span><span class="p">:</span> <span class="s2">"score"</span><span class="p">,</span> <span class="s2">"kind"</span><span class="p">:</span> <span class="s2">"numeric"</span><span class="p">,</span> <span class="s2">"values"</span><span class="p">:</span> <span class="n">scores</span><span class="p">}</span>
-<a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>        <span class="p">],</span>
-<a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a>    <span class="p">}</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">run_tool</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>    <span class="n">ids</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"ids"</span><span class="p">,</span> <span class="p">[])</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>    <span class="n">threshold</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"threshold"</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>    <span class="c1"># ... compute one score per id ...</span>
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>    <span class="n">scores</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">ids</span><span class="p">]</span>
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>    <span class="k">return</span> <span class="p">{</span>
+<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>        <span class="s2">"message"</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"Scored </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">ids</span><span class="p">)</span><span class="si">}</span><span class="s2"> molecules."</span><span class="p">,</span>
+<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a>        <span class="s2">"addColumns"</span><span class="p">:</span> <span class="p">[</span>
+<a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a>            <span class="p">{</span><span class="s2">"name"</span><span class="p">:</span> <span class="s2">"score"</span><span class="p">,</span> <span class="s2">"kind"</span><span class="p">:</span> <span class="s2">"numeric"</span><span class="p">,</span> <span class="s2">"values"</span><span class="p">:</span> <span class="n">scores</span><span class="p">}</span>
+<a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a>        <span class="p">],</span>
+<a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a>    <span class="p">}</span>
 </code></pre></div>
 <p>Rules enforced by the backend:</p>
 <ul>
