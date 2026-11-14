@@ -21,7 +21,7 @@
       
       
       <link rel="icon" href="../assets/logo.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.1">
     
     
       
@@ -29,10 +29,10 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.57a0d79d.min.css">
       
         
-        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../assets/stylesheets/palette.fb2fffe2.min.css">
       
       
 
@@ -883,6 +883,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#drug-likeness-metrics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Drug-likeness metrics
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#xyz-to-smiles-conversion" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1168,6 +1179,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#drug-likeness-metrics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Drug-likeness metrics
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#xyz-to-smiles-conversion" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1289,6 +1311,7 @@ The shipped example <code>plugins/nhc_buried_volume/</code> computes NHC buried 
 <ol>
 <li><strong>XYZ to SMILES</strong> — produces the <code>smiles</code> column required by validity checks and similarity filters.</li>
 <li><strong>Validity and connectivity metrics</strong> — use SMILES + XYZ to flag bad geometries; filter these out before expensive calculations.</li>
+<li><strong>Drug-likeness metrics</strong> <em>(optional)</em> — QED, SA score, LogP and structural alerts for the molecules that passed.</li>
 <li><strong>XTB geometry optimization</strong> <em>(optional)</em> — replace raw geometries with optimized ones before running single-point calculations.</li>
 <li><strong>XTB electronic properties</strong> — single-point calculations on the (optionally optimized) geometries.</li>
 <li><strong>Featurize</strong> — compute SOAP or UMA vectors.</li>
@@ -1353,6 +1376,46 @@ The shipped example <code>plugins/nhc_buried_volume/</code> computes NHC buried 
 </tbody>
 </table>
 <p><strong>Output</strong>: one boolean column per validity criterion (True = passes the check). Failed molecules are <code>False</code>.</p>
+<hr />
+<h3 id="drug-likeness-metrics">Drug-likeness metrics<a class="headerlink" href="#drug-likeness-metrics" title="Permanent link">&para;</a></h3>
+<p>Scores each molecule with common medicinal-chemistry descriptors, computed with RDKit from the bonds inferred out of the XYZ geometry (this is <code>MolCraftDiff analyze metrics --metrics druglike</code>).</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Default</th>
+<th>Options</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Molecule converter</td>
+<td><code>xyz2mol</code></td>
+<td>xyz2mol, openbabel</td>
+<td>Algorithm used to infer bonds from XYZ coordinates</td>
+</tr>
+<tr>
+<td>Conversion timeout per molecule, seconds</td>
+<td>10</td>
+<td>integer</td>
+<td>Molecules whose bond inference takes longer are left empty</td>
+</tr>
+<tr>
+<td>RMSD of the pose vs UFF-optimised RDKit conformers (slow)</td>
+<td>false</td>
+<td>boolean</td>
+<td>Also measures how far each geometry is from a force-field conformer of the same molecule</td>
+</tr>
+<tr>
+<td>Conformers per molecule for the RMSD</td>
+<td>20</td>
+<td>integer</td>
+<td>Number of RDKit conformers embedded for that comparison</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Output columns added</strong>: <code>QED</code>, <code>SA_score</code>, <code>LogP</code>, <code>MW</code>, <code>HBD</code>, <code>HBA</code>, <code>fsp3</code>, <code>lipinski</code>, <code>pains_pass</code>, <code>ring_filter_pass</code>, ring counts (<code>n_rings</code>, <code>n_aromatic_rings</code>, <code>n_aliphatic_rings</code>) and ring-size ratios (<code>ring_size_3</code> … <code>ring_size_9</code>), plus <code>valid_rdkit</code>. Molecules whose bonds cannot be inferred get <code>valid_rdkit = False</code> and empty descriptors. Use <a href="#xyz-to-smiles-conversion">XYZ to SMILES conversion</a> if you also need the <code>smiles</code> column.</p>
 <hr />
 <h3 id="xyz-to-smiles-conversion">XYZ to SMILES conversion<a class="headerlink" href="#xyz-to-smiles-conversion" title="Permanent link">&para;</a></h3>
 <p>Converts each molecule's XYZ geometry to a <strong>SMILES</strong> string (Simplified Molecular Input Line Entry System — a compact linear notation for molecular connectivity, e.g. <code>CCO</code> = ethanol). Also computes two derived representations:</p>
@@ -1948,10 +2011,10 @@ The shipped example <code>plugins/nhc_buried_volume/</code> computes NHC buried 
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.top", "navigation.footer", "navigation.tracking", "toc.follow", "search.suggest", "search.highlight", "content.tooltips", "content.code.copy", "content.tabs.link"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.top", "navigation.footer", "navigation.tracking", "toc.follow", "search.suggest", "search.highlight", "content.tooltips", "content.code.copy", "content.tabs.link"], "search": "../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      <script src="../assets/javascripts/bundle.a5f9d56c.min.js"></script>
       
     
   </body>

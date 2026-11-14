@@ -21,7 +21,7 @@
       
       
       <link rel="icon" href="../assets/logo.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.1">
     
     
       
@@ -29,10 +29,10 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.57a0d79d.min.css">
       
         
-        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../assets/stylesheets/palette.fb2fffe2.min.css">
       
       
 
@@ -667,6 +667,45 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="macOS (Apple Silicon)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#one-step-install" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        One-step install
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#start-at-login" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Start at login
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#updating" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Updating
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -1286,6 +1325,45 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="macOS (Apple Silicon)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#one-step-install" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        One-step install
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#start-at-login" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Start at login
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#updating" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Updating
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -1442,9 +1520,10 @@ gives you the <code>automolcraft</code> command. The <strong>manual</strong> rou
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/pregHosh/AutomaticMolCraftt
 <a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nb">cd</span><span class="w"> </span>AutomaticMolCraftt
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>conda<span class="w"> </span>env<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>environment-macos.yml
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>./scripts/install-macos.sh<span class="w">     </span><span class="c1"># creates the env, builds the UI, runs doctor (details below)</span>
 <a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>conda<span class="w"> </span>activate<span class="w"> </span>molcraft
 </code></pre></div>
+<p>Without the script: <code>conda create -n molcraft --override-channels -c conda-forge --file environment-macos.yml</code>.</p>
 </div>
 </div>
 </div>
@@ -1487,7 +1566,7 @@ fix for anything missing:</p>
 <a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>
 <a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>MolCraftDiffusion
 <a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>  ✓ MolCraftDiff CLI         …/envs/molcraft/bin/MolCraftDiff
-<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>  ✓ version                  1.12.0 (pinned 1.12.0)
+<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>  ✓ version                  1.13.0 (pinned 1.13.0)
 <a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>  ✓ torch device             Apple MPS · torch 2.6.0
 <a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>
 <a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>Analysis tools (optional)
@@ -1568,38 +1647,76 @@ with the Python of the environment it is installed in.</p>
 <ul>
 <li><strong>GPU</strong>: models run on the Apple GPU through PyTorch's MPS backend. CUDA does not exist on macOS, so
   the CUDA options in the analysis tools (t-SNE on CUDA, UMA on CUDA) do not apply; the CPU defaults work.</li>
-<li><strong>MolCraftDiffusion commit</strong>: the Mac file pins the commit that added macOS support (same version,
-  1.12.0). <code>doctor</code> and <code>/healthz</code> therefore report a different commit than the Linux pin; this is expected.</li>
+<li><strong>MolCraftDiffusion</strong>: both environment files pin the same commit. Its <code>[mac]</code> extra and the
+  <code>mac_shims</code> package are what make it run on Apple Silicon.</li>
 <li><strong>PyG extensions</strong>: <code>torch_scatter</code> / <code>torch_cluster</code> are replaced by pure-torch shims from the
   MolCraftDiffusion repository, which run on MPS.</li>
 <li><strong>Speed</strong>: generation and training work but are slower than on a CUDA GPU, and memory is shared with
   the system.</li>
+<li><strong>Training families</strong>: the ones whose models use float64 (Regression, SSL-3D and Guidance with eSEN, and
+  VAE (Transformer)) stop at start-up on MPS. See <a href="../training/#task-family">Model training</a>.</li>
 <li><strong><code>FRONTEND_DEV=1 ./dev.sh</code></strong> fails on the bash 3.2 that ships with macOS (<code>wait -n</code>). Use
   <code>automolcraft serve --dev</code>, or install a newer bash (<code>brew install bash</code>).</li>
 </ul>
+<h3 id="one-step-install">One-step install<a class="headerlink" href="#one-step-install" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>./scripts/install-macos.sh<span class="w">             </span><span class="c1"># create or update the "molcraft" env, build the UI, run doctor</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>./scripts/install-macos.sh<span class="w"> </span>--dry-run<span class="w">   </span><span class="c1"># print the commands without running them</span>
+</code></pre></div>
+<p>It needs conda (<a href="https://github.com/conda-forge/miniforge">Miniforge</a> is the simplest) and an
+Apple-Silicon Mac, and it does not install conda for you. In order, it:</p>
+<ul>
+<li>creates the environment from <code>environment-macos.yml</code> with <code>--override-channels -c conda-forge</code>, so
+  Anaconda's Terms-of-Service prompt never appears and nothing is accepted on your behalf;</li>
+<li>on an <strong>existing</strong> environment, re-applies the file's pip packages. If MolCraftDiffusion there is an
+  editable install (a development checkout) it is left alone and only compared with the pinned commit;</li>
+<li>builds the frontend, writes a commented <code>.env</code> if you have none, creates <code>models/</code>, and finishes with
+  <code>automolcraft doctor</code>.</li>
+</ul>
+<p>It does not download model checkpoints, because the Hugging Face repository is gated. Accept the terms on
+the <a href="https://huggingface.co/pregH/MolecularDiffusion">model page</a>, then from the repository root:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>pip<span class="w"> </span>install<span class="w"> </span>-U<span class="w"> </span>huggingface_hub
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>hf<span class="w"> </span>auth<span class="w"> </span>login
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>hf<span class="w"> </span>download<span class="w"> </span>pregH/MolecularDiffusion<span class="w"> </span>--include<span class="w"> </span><span class="s1">'models/EDM_qm9/*'</span><span class="w"> </span>--local-dir<span class="w"> </span>.
+</code></pre></div>
+<h3 id="start-at-login">Start at login<a class="headerlink" href="#start-at-login" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>automolcraft<span class="w"> </span>service<span class="w"> </span>install<span class="w">     </span><span class="c1"># start now and at every login (a launchd LaunchAgent)</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>automolcraft<span class="w"> </span>service<span class="w"> </span>status<span class="w">      </span><span class="c1"># installed? serving?</span>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>automolcraft<span class="w"> </span>service<span class="w"> </span>logs<span class="w">        </span><span class="c1"># end of ~/Library/Logs/automolcraft/serve.log</span>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>automolcraft<span class="w"> </span>service<span class="w"> </span>restart<span class="w">     </span><span class="c1"># e.g. after git pull</span>
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>automolcraft<span class="w"> </span>service<span class="w"> </span>uninstall
+</code></pre></div>
+<p><code>service install --port 9000</code> changes the port and <code>service install --print</code> shows the generated plist
+without installing anything. Nothing is installed until you run <code>service install</code>. The service listens on
+<code>127.0.0.1</code>; <code>--host 0.0.0.0</code> exposes it to your network, and since the app can read files on this Mac by
+path and has no login, do that only on a network you trust.</p>
+<h3 id="updating">Updating<a class="headerlink" href="#updating" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>git<span class="w"> </span>pull
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>./scripts/install-macos.sh<span class="w">       </span><span class="c1"># re-applies the pinned MolCraftDiffusion commit and rebuilds the UI</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>automolcraft<span class="w"> </span>service<span class="w"> </span>restart<span class="w">     </span><span class="c1"># only if you use the service</span>
+</code></pre></div>
 <hr />
 <h2 id="manual-install">Manual install<a class="headerlink" href="#manual-install" title="Permanent link">&para;</a></h2>
 <p>The step-by-step route, launched with <code>./dev.sh</code>.</p>
 <h3 id="1-create-the-environment">1. Create the environment<a class="headerlink" href="#1-create-the-environment" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>conda<span class="w"> </span>create<span class="w"> </span>-n<span class="w"> </span>molcraft<span class="w"> </span><span class="nv">python</span><span class="o">=</span><span class="m">3</span>.11<span class="w"> </span>-y
-<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>conda<span class="w"> </span>activate<span class="w"> </span>molcraft
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>conda<span class="w"> </span>create<span class="w"> </span>-n<span class="w"> </span>molcraft<span class="w"> </span><span class="nv">python</span><span class="o">=</span><span class="m">3</span>.11<span class="w"> </span>-y
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>conda<span class="w"> </span>activate<span class="w"> </span>molcraft
 </code></pre></div>
 <p>Install required system-level chemistry packages via conda-forge:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>conda<span class="w"> </span>install<span class="w"> </span>-c<span class="w"> </span>conda-forge<span class="w"> </span><span class="nv">xtb</span><span class="o">==</span><span class="m">6</span>.7.1<span class="w"> </span>openbabel<span class="w"> </span>-y
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>conda<span class="w"> </span>install<span class="w"> </span>-c<span class="w"> </span>conda-forge<span class="w"> </span><span class="nv">xtb</span><span class="o">==</span><span class="m">6</span>.7.1<span class="w"> </span>openbabel<span class="w"> </span>-y
 </code></pre></div>
 <p><code>xtb</code> is a semi-empirical quantum chemistry package (used in <a href="../analysis-tools/">Analysis Tools</a>). <code>openbabel</code> handles 2D structure rendering in the app.</p>
 <h3 id="2-install-molcraftdiffusion">2. Install MolCraftDiffusion<a class="headerlink" href="#2-install-molcraftdiffusion" title="Permanent link">&para;</a></h3>
 <p>Install from the pinned commit (see <a href="#version-pin">Version pin</a>); it is not on PyPI:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="nv">MOLCRAFT_REF</span><span class="o">=</span>b79e8aadc85f7047fbd9a70d1c41ea3aba0fc0a7
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="nv">MOLCRAFT_REF</span><span class="o">=</span>108dc45b11b9d73cca2c16f2d1d6b0f781c4aede
 </code></pre></div>
 <p><strong>GPU (CUDA 12.4, PyTorch 2.6):</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">"molcraftdiffusion[gpu] @ git+https://github.com/pregHosh/MolCraftDiffusion@</span><span class="si">${</span><span class="nv">MOLCRAFT_REF</span><span class="si">}</span><span class="s2">"</span><span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="w">    </span>--find-links<span class="w"> </span>https://data.pyg.org/whl/torch-2.6.0+cu124.html
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">"molcraftdiffusion[gpu] @ git+https://github.com/pregHosh/MolCraftDiffusion@</span><span class="si">${</span><span class="nv">MOLCRAFT_REF</span><span class="si">}</span><span class="s2">"</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="w">    </span>--find-links<span class="w"> </span>https://data.pyg.org/whl/torch-2.6.0+cu124.html
 </code></pre></div>
 <p><strong>CPU-only:</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">"molcraftdiffusion[cpu] @ git+https://github.com/pregHosh/MolCraftDiffusion@</span><span class="si">${</span><span class="nv">MOLCRAFT_REF</span><span class="si">}</span><span class="s2">"</span><span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="w">    </span>--extra-index-url<span class="w"> </span>https://download.pytorch.org/whl/cpu<span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="w">    </span>--find-links<span class="w"> </span>https://data.pyg.org/whl/torch-2.6.0+cpu.html
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">"molcraftdiffusion[cpu] @ git+https://github.com/pregHosh/MolCraftDiffusion@</span><span class="si">${</span><span class="nv">MOLCRAFT_REF</span><span class="si">}</span><span class="s2">"</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="w">    </span>--extra-index-url<span class="w"> </span>https://download.pytorch.org/whl/cpu<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="w">    </span>--find-links<span class="w"> </span>https://data.pyg.org/whl/torch-2.6.0+cpu.html
 </code></pre></div>
 <div class="admonition warning">
 <p class="admonition-title">MolCraftDiffusion's <code>[analyze]</code> extra downgrades pandas</p>
@@ -1609,7 +1726,7 @@ analysis packages directly instead:
 <code>pip install 'posebusters&gt;=0.5.1' morfeus-ml rmsd open3d dscribe umap-learn 'pandas&gt;=2.3,&lt;2.4'</code>.</p>
 </div>
 <h3 id="3-install-the-web-app-backend">3. Install the web app backend<a class="headerlink" href="#3-install-the-web-app-backend" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>webapp/database-explorer-lite/backend/requirements.txt
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>webapp/database-explorer-lite/backend/requirements.txt
 </code></pre></div>
 <h3 id="4-download-pretrained-models">4. Download pretrained models<a class="headerlink" href="#4-download-pretrained-models" title="Permanent link">&para;</a></h3>
 <p>As in <a href="#3-download-pretrained-models">step 3 of the recommended route</a>.</p>
@@ -1617,20 +1734,20 @@ analysis packages directly instead:
 <p>See <a href="#environment-variables">Environment variables</a>.</p>
 <h3 id="6-build-the-frontend">6. Build the frontend<a class="headerlink" href="#6-build-the-frontend" title="Permanent link">&para;</a></h3>
 <p>Run once (or whenever frontend source files change):</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="nb">cd</span><span class="w"> </span>webapp/database-explorer-lite/frontend
-<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>npm<span class="w"> </span>install
-<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>npm<span class="w"> </span>run<span class="w"> </span>build
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="nb">cd</span><span class="w"> </span>webapp/database-explorer-lite/frontend
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>npm<span class="w"> </span>install
+<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>npm<span class="w"> </span>run<span class="w"> </span>build
 </code></pre></div>
 <p><code>dev.sh</code> auto-runs this step if <code>frontend/dist</code> is absent or stale.</p>
 <h3 id="7-launch">7. Launch<a class="headerlink" href="#7-launch" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>./dev.sh
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>./dev.sh
 </code></pre></div>
 <p>Then open <code>http://localhost:8000</code> in your browser. See <a href="#launch-options">Launch options</a> for the
 <code>dev.sh</code> variables. <code>dev.sh</code> auto-detects the Python interpreter from <code>$VIRTUAL_ENV</code>, <code>$CONDA_PREFIX</code>,
 or common <code>.venv</code>/<code>venv</code> paths; set <code>BACKEND_PYTHON=/path/to/python</code> to choose one explicitly.</p>
 <hr />
 <h2 id="environment-variables">Environment variables<a class="headerlink" href="#environment-variables" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>cp<span class="w"> </span>webapp/database-explorer-lite/.env.example<span class="w"> </span>webapp/database-explorer-lite/.env
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>cp<span class="w"> </span>webapp/database-explorer-lite/.env.example<span class="w"> </span>webapp/database-explorer-lite/.env
 </code></pre></div>
 <p>All variables are optional. Both <code>automolcraft serve</code> and <code>./dev.sh</code> read the first <code>.env</code> found in the
 repository root, <code>webapp/database-explorer-lite/</code>, or its <code>backend/</code> folder. Variables already set in
@@ -1688,8 +1805,8 @@ your shell take precedence.</p>
 </table>
 <hr />
 <h2 id="version-pin">Version pin<a class="headerlink" href="#version-pin" title="Permanent link">&para;</a></h2>
-<p>The app is pinned to MolCraftDiffusion <strong>commit <code>b79e8aadc85f7047fbd9a70d1c41ea3aba0fc0a7</code>
-(version 1.12.0)</strong> — an exact pin, not a minimum. The app names Hydra config groups (<code>tasks</code>,
+<p>The app is pinned to MolCraftDiffusion <strong>commit <code>108dc45b11b9d73cca2c16f2d1d6b0f781c4aede</code>
+(version 1.13.0)</strong> — an exact pin, not a minimum. The app names Hydra config groups (<code>tasks</code>,
 <code>interference</code>) and <code>analyze</code> CLI flags that shift across upstream commits (flags get renamed or moved
 to a different subcommand, not just added); a package that's ahead of or behind the pin can fail a job
 partway through with a <code>MissingConfigException</code> or <code>no such option</code> rather than failing at startup.
@@ -1699,6 +1816,11 @@ against the pin. The pin lives in <code>webapp/database-explorer-lite/backend/ma
 (<code>MOLCRAFT_PINNED_VERSION</code> / <code>MOLCRAFT_PINNED_COMMIT</code>) — this page, <code>environment.yml</code> and
 <code>environment-macos.yml</code> must match those constants; bump them together and re-verify <code>TASK_FAMILIES</code> /
 <code>TASK_TYPE_TO_TASKS_CONFIG</code> / the <code>analyze</code> CLI flags before moving the pin forward.</p>
+<p>Two scripts in <code>webapp/database-explorer-lite/backend/</code> do that re-check, so run them after changing the
+pin (with the new MolCraftDiffusion installed):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>python<span class="w"> </span>test_task_families.py<span class="w">   </span><span class="c1"># every task group exists, installed version == pin</span>
+<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>python<span class="w"> </span>test_analysis_cmds.py<span class="w">   </span><span class="c1"># every `analyze` flag the backend passes exists in the installed CLI</span>
+</code></pre></div>
 
 
 
@@ -1796,10 +1918,10 @@ against the pin. The pin lives in <code>webapp/database-explorer-lite/backend/ma
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.top", "navigation.footer", "navigation.tracking", "toc.follow", "search.suggest", "search.highlight", "content.tooltips", "content.code.copy", "content.tabs.link"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.top", "navigation.footer", "navigation.tracking", "toc.follow", "search.suggest", "search.highlight", "content.tooltips", "content.code.copy", "content.tabs.link"], "search": "../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      <script src="../assets/javascripts/bundle.a5f9d56c.min.js"></script>
       
     
   </body>

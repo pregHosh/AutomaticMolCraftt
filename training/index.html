@@ -21,7 +21,7 @@
       
       
       <link rel="icon" href="../assets/logo.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.1">
     
     
       
@@ -29,10 +29,10 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.57a0d79d.min.css">
       
         
-        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../assets/stylesheets/palette.fb2fffe2.min.css">
       
       
 
@@ -1571,7 +1571,7 @@
 <tbody>
 <tr>
 <td><code>diffusion</code></td>
-<td>Diffusion (EGCL), Diffusion (EGCL, pretrained defaults), Diffusion (EGT), Tabasco (Flow)</td>
+<td>Diffusion (EGCL), Diffusion (EGCL, pretrained defaults), Diffusion (EGT), Diffusion (Transformer), Diffusion (PaiNN), Diffusion (EquiformerV2), Tabasco (Flow), Tabasco (EGNN backbone)</td>
 <td>DDPM/flow-based 3D molecule generation</td>
 </tr>
 <tr>
@@ -1596,6 +1596,38 @@
 </tr>
 </tbody>
 </table>
+<div class="admonition warning">
+<p class="admonition-title">Families that did not complete a test run</p>
+<p>Every family was run for one epoch on a small dataset with MolCraftDiffusion 1.13.0 on an Apple-Silicon
+Mac (PyTorch MPS). These did not finish; the others trained and saved checkpoints.</p>
+<table>
+<thead>
+<tr>
+<th>Family</th>
+<th>What happened</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Regression (eSEN), SSL-3D (eSEN), Guidance (eSEN), VAE (Transformer)</td>
+<td>Stop at start-up on Apple Silicon: <code>Cannot convert a MPS Tensor to float64</code>, because MPS has no float64. Not tested on CUDA.</td>
+</tr>
+<tr>
+<td>SSL-3D (EGT)</td>
+<td>MolCraftDiffusion's EGT task factory rejects the <code>ssl3d</code> task type (<code>Unknown task_type 'ssl3d'</code>).</td>
+</tr>
+<tr>
+<td>SSL-3D (Equiformer)</td>
+<td>Fails in the EquiformerV2 forward pass (<code>Tensors must have same number of dimensions</code>).</td>
+</tr>
+<tr>
+<td>VAE (Equiformer)</td>
+<td>Trains an epoch, then fails in the post-epoch evaluation (<code>KeyError: 'match_rate'</code>).</td>
+</tr>
+</tbody>
+</table>
+<p>The last three also fail with the previous MolCraftDiffusion version; the code involved is unchanged.</p>
+</div>
 <hr />
 <h2 id="run-mode">Run mode<a class="headerlink" href="#run-mode" title="Permanent link">&para;</a></h2>
 <table>
@@ -1830,9 +1862,16 @@
 </tr>
 </tbody>
 </table>
+<div class="admonition note">
+<p class="admonition-title">Backbones with their own configuration block</p>
+<p>Hidden size and Number of layers are written into every family's config, but the Transformer, PaiNN,
+EquiformerV2 and Tabasco backbones are configured through their own block in MolCraftDiffusion's
+<code>configs/tasks/&lt;family&gt;.yaml</code> and may ignore these two fields. <strong>Generate YAML</strong> shows exactly what is sent.
+The Tabasco families take their vocabulary size and <em>Max atoms</em> from the Data section.</p>
+</div>
 <hr />
 <h3 id="diffusion-settings">Diffusion settings<a class="headerlink" href="#diffusion-settings" title="Permanent link">&para;</a></h3>
-<p>Applies to task families in the <code>diffusion</code> category: Diffusion (EGCL), Diffusion (EGCL, pretrained defaults), Diffusion (EGT), and Tabasco (Flow).</p>
+<p>Applies to task families in the <code>diffusion</code> category: Diffusion (EGCL), Diffusion (EGCL, pretrained defaults), Diffusion (EGT), Diffusion (Transformer), Diffusion (PaiNN), Diffusion (EquiformerV2), Tabasco (Flow), Tabasco (EGNN backbone).</p>
 <table>
 <thead>
 <tr>
@@ -2165,7 +2204,7 @@
 <tr>
 <td>Scheduler</td>
 <td><code>cosineannealing</code></td>
-<td>LR schedule: <code>cosineannealing</code>, <code>reducelronplateau</code>, <code>steplr</code>, <code>onecyclelr</code>, or <code>exponentiallr</code></td>
+<td>LR schedule: <code>cosineannealing</code>, <code>reducelronplateau</code>, <code>steplr</code>, <code>onecyclelr</code>, or <code>exponentiallr</code>. The regression families keep their own <code>reducelronplateau</code> schedule while this is left on <code>cosineannealing</code> (their trainer defaults would otherwise break the cosine scheduler)</td>
 </tr>
 <tr>
 <td>Validation interval</td>
@@ -2445,10 +2484,10 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.top", "navigation.footer", "navigation.tracking", "toc.follow", "search.suggest", "search.highlight", "content.tooltips", "content.code.copy", "content.tabs.link"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.top", "navigation.footer", "navigation.tracking", "toc.follow", "search.suggest", "search.highlight", "content.tooltips", "content.code.copy", "content.tabs.link"], "search": "../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      <script src="../assets/javascripts/bundle.a5f9d56c.min.js"></script>
       
     
   </body>

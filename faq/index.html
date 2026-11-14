@@ -19,7 +19,7 @@
       
       
       <link rel="icon" href="../assets/logo.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.1">
     
     
       
@@ -27,10 +27,10 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.57a0d79d.min.css">
       
         
-        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../assets/stylesheets/palette.fb2fffe2.min.css">
       
       
 
@@ -1070,10 +1070,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#on-macos-the-health-check-says-the-molcraftdiffusion-commit-does-not-match" class="md-nav__link">
+  <a href="#the-health-check-says-the-molcraftdiffusion-version-or-commit-does-not-match-the-pin" class="md-nav__link">
     <span class="md-ellipsis">
       
-        On macOS, the health check says the MolCraftDiffusion commit does not match
+        The health check says the MolCraftDiffusion version or commit does not match the pin
       
     </span>
   </a>
@@ -1214,10 +1214,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#on-macos-the-health-check-says-the-molcraftdiffusion-commit-does-not-match" class="md-nav__link">
+  <a href="#the-health-check-says-the-molcraftdiffusion-version-or-commit-does-not-match-the-pin" class="md-nav__link">
     <span class="md-ellipsis">
       
-        On macOS, the health check says the MolCraftDiffusion commit does not match
+        The health check says the MolCraftDiffusion version or commit does not match the pin
       
     </span>
   </a>
@@ -1296,8 +1296,9 @@
 <h2 id="where-do-xtbs-scratch-files-go">Where do xTB's scratch files go?<a class="headerlink" href="#where-do-xtbs-scratch-files-go" title="Permanent link">&para;</a></h2>
 <p>xTB writes files such as <code>xtbopt.log</code>, <code>charges</code>, <code>wbo</code> and <code>xtbrestart</code> into its working directory. Analysis and generation jobs run inside their own job folder (under <code>MOLCRAFT_ANALYSIS_WORK_DIR</code> or <code>MOLCRAFT_OUTPUTS_DIR</code>), so those files stay with the job. If you find them in the repository root, they come from an older version of the app and can be deleted.</p>
 <hr />
-<h2 id="on-macos-the-health-check-says-the-molcraftdiffusion-commit-does-not-match">On macOS, the health check says the MolCraftDiffusion commit does not match<a class="headerlink" href="#on-macos-the-health-check-says-the-molcraftdiffusion-commit-does-not-match" title="Permanent link">&para;</a></h2>
-<p>Expected. <code>environment-macos.yml</code> installs MolCraftDiffusion 1.12.0 at the commit that added macOS support, which is newer than the Linux pin. The version still matches. See <a href="../installation/#macos-apple-silicon">macOS (Apple Silicon)</a>.</p>
+<h2 id="the-health-check-says-the-molcraftdiffusion-version-or-commit-does-not-match-the-pin">The health check says the MolCraftDiffusion version or commit does not match the pin<a class="headerlink" href="#the-health-check-says-the-molcraftdiffusion-version-or-commit-does-not-match-the-pin" title="Permanent link">&para;</a></h2>
+<p>The app is pinned to one exact MolCraftDiffusion commit, because Hydra config groups and <code>analyze</code> flags change between commits (see <a href="../installation/#version-pin">Version pin</a>). Re-run the environment file to get the pinned commit; on macOS that is <code>./scripts/install-macos.sh</code>.</p>
+<p>If you installed MolCraftDiffusion with <code>pip install -e</code> from your own checkout, only the version is compared, because an editable install records no commit. Check out the pinned commit in that checkout. See <a href="../installation/#macos-apple-silicon">macOS (Apple Silicon)</a>.</p>
 
 
 
@@ -1379,10 +1380,10 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.top", "navigation.footer", "navigation.tracking", "toc.follow", "search.suggest", "search.highlight", "content.tooltips", "content.code.copy", "content.tabs.link"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.top", "navigation.footer", "navigation.tracking", "toc.follow", "search.suggest", "search.highlight", "content.tooltips", "content.code.copy", "content.tabs.link"], "search": "../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      <script src="../assets/javascripts/bundle.a5f9d56c.min.js"></script>
       
     
   </body>
