@@ -146,8 +146,8 @@ ACTIVE_GENERATION_PROCS: Dict[str, subprocess.Popen] = {}
 # from upstream silently and fail minutes into a job rather than at startup, so an older
 # *or newer* installed package is equally suspect. Bump both constants together only
 # after re-checking those two integration points against the new commit.
-MOLCRAFT_PINNED_VERSION = "1.12.0"
-MOLCRAFT_PINNED_COMMIT = "b79e8aadc85f7047fbd9a70d1c41ea3aba0fc0a7"  # pregHosh/MolCraftDiffusion@main
+MOLCRAFT_PINNED_VERSION = "1.13.0"
+MOLCRAFT_PINNED_COMMIT = "108dc45b11b9d73cca2c16f2d1d6b0f781c4aede"  # pregHosh/MolCraftDiffusion@main
 
 
 def _molcraft_version() -> str | None:
@@ -928,6 +928,11 @@ TASK_TYPE_TO_TASKS_CONFIG = {
     "diffusion_pharmacophore": "pharmacophore",
     "diffusion_pmdm": "diffusion_pmdm",
     "diffusion_tabasco": "diffusion_tabasco",
+    # TABASCO with a swapped backbone (1.13): same sampler and interference configs,
+    # only the denoiser differs, so a checkpoint needs its own group to validate.
+    "diffusion_tabasco_egnn": "diffusion_tabasco_egnn",
+    "diffusion_tabasco_equiformer": "diffusion_tabasco_equiformer",
+    "diffusion_tabasco_gvp": "diffusion_tabasco_gvp",
 }
 
 
@@ -3106,6 +3111,43 @@ ANALYSIS_TOOLS: dict[str, dict[str, Any]] = {
         ],
         "output": {"kind": "add_columns"},
     },
+    "druglike_metrics": {
+        "id": "druglike_metrics",
+        "name": "Drug-likeness metrics",
+        "description": (
+            "QED, SA score, LogP, Lipinski, PAINS and ring statistics per molecule "
+            "(MolCraftDiff analyze metrics --metrics druglike)."
+        ),
+        "mode": "columns",
+        "inputs": [
+            {
+                "key": "mol_converter",
+                "label": "Molecule converter",
+                "type": "select",
+                "default": "xyz2mol",
+                "options": ["xyz2mol", "openbabel"],
+            },
+            {
+                "key": "timeout",
+                "label": "Conversion timeout per molecule, seconds",
+                "type": "integer",
+                "default": 10,
+            },
+            {
+                "key": "rdkit_rmsd",
+                "label": "RMSD of the pose vs UFF-optimised RDKit conformers (slow)",
+                "type": "boolean",
+                "default": False,
+            },
+            {
+                "key": "rmsd_n_conf",
+                "label": "Conformers per molecule for the RMSD",
+                "type": "integer",
+                "default": 20,
+            },
+        ],
+        "output": {"kind": "add_columns"},
+    },
     "xyz_to_smiles": {
         "id": "xyz_to_smiles",
         "name": "XYZ to SMILES conversion",
@@ -4809,6 +4851,20 @@ def _analysis_cmd_for_tool(tool_id: str, params: dict[str, Any], xyz_dir: Path, 
             cmd.append("--recheck-topo")
         if params.get("mol_converter"):
             cmd += ["--mol-converter", str(params.get("mol_converter"))]
+
+    elif tool_id == "druglike_metrics":
+        # The CLI appends the metric-set name to the -o stem: druglike_metrics.csv is written
+        # as druglike_metrics_druglike.csv. _analysis_find_csv still globs if that ever changes.
+        output_csv = job_dir / "druglike_metrics_druglike.csv"
+        cmd += [
+            "metrics", str(xyz_dir), "--metrics", "druglike",
+            "-o", str(job_dir / "druglike_metrics.csv"),
+            "--timeout", str(int(params.get("timeout") or 10)),
+        ]
+        if params.get("mol_converter"):
+            cmd += ["--mol-converter", str(params.get("mol_converter"))]
+        if params.get("rdkit_rmsd"):
+            cmd += ["--rdkit-rmsd", "--rmsd-n-conf", str(int(params.get("rmsd_n_conf") or 20))]
 
     elif tool_id == "xyz_to_smiles":
         cmd += ["xyz2mol", str(xyz_dir), "--bits", str(int(params.get("bits") or 2048))]

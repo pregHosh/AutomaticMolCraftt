@@ -94,6 +94,8 @@ xTB writes files such as `xtbopt.log`, `charges`, `wbo` and `xtbrestart` into it
 
 ---
 
-## On macOS, the health check says the MolCraftDiffusion commit does not match
+## The health check says the MolCraftDiffusion version or commit does not match the pin
 
-Expected. `environment-macos.yml` installs MolCraftDiffusion 1.12.0 at the commit that added macOS support, which is newer than the Linux pin. The version still matches. See [macOS (Apple Silicon)](installation.md#macos-apple-silicon).
+The app is pinned to one exact MolCraftDiffusion commit, because Hydra config groups and `analyze` flags change between commits (see [Version pin](installation.md#version-pin)). Re-run the environment file to get the pinned commit; on macOS that is `./scripts/install-macos.sh`.
+
+If you installed MolCraftDiffusion with `pip install -e` from your own checkout, only the version is compared, because an editable install records no commit. Check out the pinned commit in that checkout. See [macOS (Apple Silicon)](installation.md#macos-apple-silicon).

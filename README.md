@@ -34,7 +34,7 @@ A browser-based platform for the full 3D molecular generative design pipeline: r
 | **Structure-guided generation** | Inpaint or outpaint from a reference `.xyz` scaffold, with tunable denoising/constraint strength |
 | **Model training** | Configure, queue, monitor, and export MolCraftDiff training jobs from a form or an imported YAML |
 | **Multi-source data curation** | Stage and compile CSV+XYZ, ASE `.db`, and generation-job outputs into one dataset |
-| **Analysis pipeline** | Async jobs for validity/connectivity checks, XTB properties and geometry optimization, featurization, dimensionality reduction, and property prediction |
+| **Analysis pipeline** | Async jobs for validity/connectivity and drug-likeness checks, XTB properties and geometry optimization, featurization, dimensionality reduction, and property prediction |
 | **Linked visualization** | 2D/3D scatter, histograms, and a 3D molecule viewer sharing one selection state, GPU-rendered via deck.gl |
 | **Plug-in tools** | Turn your own XYZ → CSV evaluation script into an Analysis tool by putting a `plugin.json` next to it (example: [`plugins/nhc_buried_volume`](plugins/nhc_buried_volume/) for NHC buried volume/octants/quadrants), or add in-process tools via `manifest.json` + `runner.py` |
 
@@ -48,7 +48,7 @@ automolcraft doctor                        # checks xTB, MolCraftDiffusion, GPU,
 ```
 
 The environment file installs xTB, OpenBabel, Node.js, MolCraftDiffusion at the pinned commit
-(`b79e8aad…`, version 1.12.0), the analysis-tool packages, and this app (which provides the
+(`108dc45b…`, version 1.13.0), the analysis-tool packages, and this app (which provides the
 `automolcraft` command). Download [pretrained models from Hugging Face](https://huggingface.co/pregH/MolecularDiffusion)
 into `models/`, then launch:
 
@@ -58,12 +58,16 @@ automolcraft serve                         # builds the frontend on first run, o
 
 Options: `--port 9000`, `--host 0.0.0.0`, `--dev` (Vite hot reload), `--rebuild`, `--no-browser`.
 
+**macOS (Apple Silicon), one step:** `./scripts/install-macos.sh` creates (or updates) the `molcraft`
+environment from `environment-macos.yml`, builds the UI and runs `automolcraft doctor`.
+`automolcraft service install` then starts the app at every login (see `docs/installation.md`).
+
 **Manual install** — the step-by-step route still works and launches with `./dev.sh`:
 
 ```bash
 conda create -n molcraft python=3.11 -y && conda activate molcraft
 conda install -c conda-forge xtb==6.7.1 openbabel -y
-MOLCRAFT_REF=b79e8aadc85f7047fbd9a70d1c41ea3aba0fc0a7
+MOLCRAFT_REF=108dc45b11b9d73cca2c16f2d1d6b0f781c4aede
 pip install "molcraftdiffusion[gpu] @ git+https://github.com/pregHosh/MolCraftDiffusion@${MOLCRAFT_REF}" \
     --find-links https://data.pyg.org/whl/torch-2.6.0+cu124.html   # or [cpu] with the CPU torch index
 pip install -r webapp/database-explorer-lite/backend/requirements.txt

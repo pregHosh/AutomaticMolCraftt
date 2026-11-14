@@ -22,9 +22,11 @@ gives you the `automolcraft` command. The **manual** route is the step-by-step i
     ```bash
     git clone https://github.com/pregHosh/AutomaticMolCraftt
     cd AutomaticMolCraftt
-    conda env create -f environment-macos.yml
+    ./scripts/install-macos.sh     # creates the env, builds the UI, runs doctor (details below)
     conda activate molcraft
     ```
+
+    Without the script: `conda create -n molcraft --override-channels -c conda-forge --file environment-macos.yml`.
 
 The environment file installs, from conda-forge and pip:
 
@@ -72,7 +74,7 @@ Web app
 
 MolCraftDiffusion
   ✓ MolCraftDiff CLI         …/envs/molcraft/bin/MolCraftDiff
-  ✓ version                  1.12.0 (pinned 1.12.0)
+  ✓ version                  1.13.0 (pinned 1.13.0)
   ✓ torch device             Apple MPS · torch 2.6.0
 
 Analysis tools (optional)
@@ -131,14 +133,65 @@ The app runs natively on M-series Macs; `environment-macos.yml` sets it up. What
 
 - **GPU**: models run on the Apple GPU through PyTorch's MPS backend. CUDA does not exist on macOS, so
   the CUDA options in the analysis tools (t-SNE on CUDA, UMA on CUDA) do not apply; the CPU defaults work.
-- **MolCraftDiffusion commit**: the Mac file pins the commit that added macOS support (same version,
-  1.12.0). `doctor` and `/healthz` therefore report a different commit than the Linux pin; this is expected.
+- **MolCraftDiffusion**: both environment files pin the same commit. Its `[mac]` extra and the
+  `mac_shims` package are what make it run on Apple Silicon.
 - **PyG extensions**: `torch_scatter` / `torch_cluster` are replaced by pure-torch shims from the
   MolCraftDiffusion repository, which run on MPS.
 - **Speed**: generation and training work but are slower than on a CUDA GPU, and memory is shared with
   the system.
+- **Training families**: the ones whose models use float64 (Regression, SSL-3D and Guidance with eSEN, and
+  VAE (Transformer)) stop at start-up on MPS. See [Model training](training.md#task-family).
 - **`FRONTEND_DEV=1 ./dev.sh`** fails on the bash 3.2 that ships with macOS (`wait -n`). Use
   `automolcraft serve --dev`, or install a newer bash (`brew install bash`).
+
+### One-step install
+
+```bash
+./scripts/install-macos.sh             # create or update the "molcraft" env, build the UI, run doctor
+./scripts/install-macos.sh --dry-run   # print the commands without running them
+```
+
+It needs conda ([Miniforge](https://github.com/conda-forge/miniforge) is the simplest) and an
+Apple-Silicon Mac, and it does not install conda for you. In order, it:
+
+- creates the environment from `environment-macos.yml` with `--override-channels -c conda-forge`, so
+  Anaconda's Terms-of-Service prompt never appears and nothing is accepted on your behalf;
+- on an **existing** environment, re-applies the file's pip packages. If MolCraftDiffusion there is an
+  editable install (a development checkout) it is left alone and only compared with the pinned commit;
+- builds the frontend, writes a commented `.env` if you have none, creates `models/`, and finishes with
+  `automolcraft doctor`.
+
+It does not download model checkpoints, because the Hugging Face repository is gated. Accept the terms on
+the [model page](https://huggingface.co/pregH/MolecularDiffusion), then from the repository root:
+
+```bash
+pip install -U huggingface_hub
+hf auth login
+hf download pregH/MolecularDiffusion --include 'models/EDM_qm9/*' --local-dir .
+```
+
+### Start at login
+
+```bash
+automolcraft service install     # start now and at every login (a launchd LaunchAgent)
+automolcraft service status      # installed? serving?
+automolcraft service logs        # end of ~/Library/Logs/automolcraft/serve.log
+automolcraft service restart     # e.g. after git pull
+automolcraft service uninstall
+```
+
+`service install --port 9000` changes the port and `service install --print` shows the generated plist
+without installing anything. Nothing is installed until you run `service install`. The service listens on
+`127.0.0.1`; `--host 0.0.0.0` exposes it to your network, and since the app can read files on this Mac by
+path and has no login, do that only on a network you trust.
+
+### Updating
+
+```bash
+git pull
+./scripts/install-macos.sh       # re-applies the pinned MolCraftDiffusion commit and rebuilds the UI
+automolcraft service restart     # only if you use the service
+```
 
 ---
 
@@ -166,7 +219,7 @@ conda install -c conda-forge xtb==6.7.1 openbabel -y
 Install from the pinned commit (see [Version pin](#version-pin)); it is not on PyPI:
 
 ```bash
-MOLCRAFT_REF=b79e8aadc85f7047fbd9a70d1c41ea3aba0fc0a7
+MOLCRAFT_REF=108dc45b11b9d73cca2c16f2d1d6b0f781c4aede
 ```
 
 **GPU (CUDA 12.4, PyTorch 2.6):**
@@ -253,8 +306,8 @@ your shell take precedence.
 
 ## Version pin
 
-The app is pinned to MolCraftDiffusion **commit `b79e8aadc85f7047fbd9a70d1c41ea3aba0fc0a7`
-(version 1.12.0)** — an exact pin, not a minimum. The app names Hydra config groups (`tasks`,
+The app is pinned to MolCraftDiffusion **commit `108dc45b11b9d73cca2c16f2d1d6b0f781c4aede`
+(version 1.13.0)** — an exact pin, not a minimum. The app names Hydra config groups (`tasks`,
 `interference`) and `analyze` CLI flags that shift across upstream commits (flags get renamed or moved
 to a different subcommand, not just added); a package that's ahead of or behind the pin can fail a job
 partway through with a `MissingConfigException` or `no such option` rather than failing at startup.
@@ -265,3 +318,11 @@ against the pin. The pin lives in `webapp/database-explorer-lite/backend/main.py
 (`MOLCRAFT_PINNED_VERSION` / `MOLCRAFT_PINNED_COMMIT`) — this page, `environment.yml` and
 `environment-macos.yml` must match those constants; bump them together and re-verify `TASK_FAMILIES` /
 `TASK_TYPE_TO_TASKS_CONFIG` / the `analyze` CLI flags before moving the pin forward.
+
+Two scripts in `webapp/database-explorer-lite/backend/` do that re-check, so run them after changing the
+pin (with the new MolCraftDiffusion installed):
+
+```bash
+python test_task_families.py   # every task group exists, installed version == pin
+python test_analysis_cmds.py   # every `analyze` flag the backend passes exists in the installed CLI
+```

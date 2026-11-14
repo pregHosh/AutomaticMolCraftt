@@ -37,11 +37,38 @@ TASK_FAMILIES: dict[str, dict[str, Any]] = {
         "trainer_config": "default",
         "category": "diffusion",
     },
+    "diffusion_transformer": {
+        "label": "Diffusion (Transformer)",
+        "tasks_config": "diffusion_transformer",
+        "trainer_config": "default",
+        "category": "diffusion",
+    },
+    "diffusion_painn": {
+        "label": "Diffusion (PaiNN)",
+        "tasks_config": "diffusion_painn",
+        "trainer_config": "default",
+        "category": "diffusion",
+    },
+    "diffusion_equiformer": {
+        "label": "Diffusion (EquiformerV2)",
+        "tasks_config": "diffusion_equiformer",
+        "trainer_config": "default",
+        "category": "diffusion",
+    },
     "diffusion_tabasco": {
         "label": "Tabasco (Flow)",
         "tasks_config": "diffusion_tabasco",
         "trainer_config": "default",
         "category": "diffusion",
+        # Name of the backbone block whose `atom_dim` the shipped config leaves as `???`.
+        "backbone_config": "transformer_config",
+    },
+    "diffusion_tabasco_egnn": {
+        "label": "Tabasco (EGNN backbone)",
+        "tasks_config": "diffusion_tabasco_egnn",
+        "trainer_config": "default",
+        "category": "diffusion",
+        "backbone_config": "egnn_config",
     },
     "regression": {
         "label": "Regression (EGCL)",
@@ -69,24 +96,32 @@ TASK_FAMILIES: dict[str, dict[str, Any]] = {
         "tasks_config": "ssl3d_egcl",
         "trainer_config": "default",
         "category": "ssl3d",
+        # predict/ssl3d.py reads batch["graph"]: it needs a pyg batch, not a pointcloud one.
+        "data_type": "pyg",
     },
     "ssl3d_egt": {
         "label": "SSL-3D (EGT)",
         "tasks_config": "ssl3d_egt",
         "trainer_config": "default",
         "category": "ssl3d",
+        # predict/ssl3d.py reads batch["graph"]: it needs a pyg batch, not a pointcloud one.
+        "data_type": "pyg",
     },
     "ssl3d_esen": {
         "label": "SSL-3D (eSEN)",
         "tasks_config": "ssl3d_esen",
         "trainer_config": "default",
         "category": "ssl3d",
+        # predict/ssl3d.py reads batch["graph"]: it needs a pyg batch, not a pointcloud one.
+        "data_type": "pyg",
     },
     "ssl3d_equiformer": {
         "label": "SSL-3D (Equiformer)",
         "tasks_config": "ssl3d_equiformer",
         "trainer_config": "default",
         "category": "ssl3d",
+        # predict/ssl3d.py reads batch["graph"]: it needs a pyg batch, not a pointcloud one.
+        "data_type": "pyg",
     },
     "vae_equiformer": {
         "label": "VAE (Equiformer)",
@@ -105,12 +140,16 @@ TASK_FAMILIES: dict[str, dict[str, Any]] = {
         "tasks_config": "guidance",
         "trainer_config": "default",
         "category": "guidance",
+        # GuidanceTask.predict reads batch["graph"]: it needs a pyg batch, not a pointcloud one.
+        "data_type": "pyg",
     },
     "guidance_esen": {
         "label": "Guidance (eSEN)",
         "tasks_config": "guidance_esen",
         "trainer_config": "default",
         "category": "guidance",
+        # GuidanceTask.predict reads batch["graph"]: it needs a pyg batch, not a pointcloud one.
+        "data_type": "pyg",
     },
 }
 
@@ -120,7 +159,11 @@ PUBLIC_TASK_FAMILIES: frozenset[str] = frozenset({
     "diffusion",
     "diffusion_pretrained",
     "diffusion_egt",
+    "diffusion_transformer",
+    "diffusion_painn",
+    "diffusion_equiformer",
     "diffusion_tabasco",
+    "diffusion_tabasco_egnn",
     "regression",
     "regression_esen",
     "regression_equiformer",
@@ -383,11 +426,31 @@ def build_yaml_dict(payload: dict[str, Any], output_path: str) -> dict[str, Any]
         if payload.get("chkpt_path"):
             tasks["chkpt_path"] = payload["chkpt_path"]
 
+        backbone_key = meta.get("backbone_config")
+        if backbone_key:
+            # TABASCO factories take these as constructor arguments and the shipped configs
+            # leave them `???`. `MolCraftDiff generate` fills them in; `MolCraftDiff train`
+            # does not, so Hydra raises MissingMandatoryValue at instantiation unless the
+            # config supplies them. Same rule as the training loop's vocabulary: allow_unknown
+            # appends one extra "unknown" type.
+            n_types = len(atom_vocab) + (1 if payload.get("allow_unknown") else 0)
+            tasks["num_atom_types"] = n_types
+            tasks[backbone_key] = {"atom_dim": n_types}
+            tasks["dataset_stats"] = {"max_atoms": int(payload.get("max_atom", 86))}
+
     if category == "flow_matching":
         tasks["fm_min_t"] = float(payload.get("fm_min_t", 0.01))
         tasks["fm_num_timesteps"] = int(payload.get("fm_num_timesteps", 100))
         tasks["fm_self_condition"] = bool(payload.get("fm_self_condition", False))
         tasks["use_velocity"] = bool(payload.get("use_velocity", False))
+
+    if category == "guidance" and payload.get("task_learn"):
+        # guidance.yaml ships task_learn: [S1_exc, T1_exc]; without this a YAML-imported or
+        # API-submitted guidance job silently trains on those columns instead of its own.
+        guidance_targets = payload["task_learn"]
+        if isinstance(guidance_targets, str):
+            guidance_targets = [s.strip() for s in guidance_targets.split(",") if s.strip()]
+        tasks["task_learn"] = list(guidance_targets)
 
     if category == "regression":
         task_learn = payload.get("task_learn", [])
@@ -452,10 +515,19 @@ def build_yaml_dict(payload: dict[str, Any], output_path: str) -> dict[str, Any]
     if sched_kw and isinstance(sched_kw, dict):
         trainer["scheduler_kwargs"] = sched_kw
     elif trainer["scheduler"] == "cosineannealing":
-        trainer["scheduler_kwargs"] = {
-            "T_max": trainer.get("num_epochs", 200),
-            "eta_min": 1e-6,
-        }
+        if trainer_cfg == "regression":
+            # The regression trainer group ships ReduceLROnPlateau kwargs (mode/factor/patience).
+            # Hydra merges dicts instead of replacing them, so layering the form's default
+            # cosine schedule on top hands CosineAnnealingLR those leftovers and the job dies
+            # at startup with "unexpected keyword argument 'mode'". Keep the group's own
+            # scheduler unless the caller chose one explicitly (an explicit scheduler other
+            # than cosine, or explicit scheduler_kwargs, never reaches this branch).
+            del trainer["scheduler"]
+        else:
+            trainer["scheduler_kwargs"] = {
+                "T_max": trainer.get("num_epochs", 200),
+                "eta_min": 1e-6,
+            }
 
     if payload.get("resume_from_checkpoint"):
         trainer["resume_from_checkpoint"] = payload["resume_from_checkpoint"]

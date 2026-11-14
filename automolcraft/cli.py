@@ -301,8 +301,8 @@ def cmd_doctor(_args: argparse.Namespace) -> None:
                "other versions may work but are untested with this app")
     commit = _molcraft_commit()
     if commit and pin_commit and commit != pin_commit:
-        note = "expected for the macOS env file (it pins the Mac-support commit)" if sys.platform == "darwin" else ""
-        r.line(WARN, "commit", f"{commit[:10]} (pinned {pin_commit[:10]})", note)
+        r.line(WARN, "commit", f"{commit[:10]} (pinned {pin_commit[:10]})",
+               "re-run the environment file / scripts/install-macos.sh to get the pinned commit")
 
     ok, torch_version = _try_import("torch")
     if not ok:
@@ -361,6 +361,27 @@ def cmd_doctor(_args: argparse.Namespace) -> None:
 
 
 # ---------------------------------------------------------------------------
+# service (macOS launchd)
+# ---------------------------------------------------------------------------
+
+def cmd_service(args: argparse.Namespace) -> None:
+    from . import service
+
+    command = args.service_command
+    if command == "install":
+        _check_layout()
+        service.install(args.host, args.port, args.print_only, ROOT, build_frontend)
+    elif command == "uninstall":
+        service.uninstall()
+    elif command == "status":
+        service.status()
+    elif command == "restart":
+        service.restart()
+    elif command == "logs":
+        service.logs(args.lines)
+
+
+# ---------------------------------------------------------------------------
 
 def main(argv: list[str] | None = None) -> None:
     parser = argparse.ArgumentParser(prog="automolcraft", description="AutomaticMolCraft web app launcher")
@@ -382,6 +403,27 @@ def main(argv: list[str] | None = None) -> None:
 
     build = sub.add_parser("build-frontend", help="(re)build the frontend bundle")
     build.set_defaults(func=lambda _a: (_check_layout(), build_frontend(force=True)))
+
+    service = sub.add_parser(
+        "service",
+        help="run the app as a macOS login service (launchd)",
+        description="Start the web app at every login and keep it running. macOS only; "
+                    "nothing is installed until you run `service install`.",
+    )
+    svc = service.add_subparsers(dest="service_command", required=True)
+    s_install = svc.add_parser("install", help="start now and at every login")
+    s_install.add_argument("--host", default="127.0.0.1",
+                           help="bind address (default 127.0.0.1; 0.0.0.0 exposes the app to your network)")
+    s_install.add_argument("--port", type=int, default=8000, help="backend port (default 8000)")
+    s_install.add_argument("--print", dest="print_only", action="store_true",
+                           help="print the LaunchAgent plist and exit without installing")
+    svc.add_parser("uninstall", help="stop the service and remove it from login")
+    svc.add_parser("status", help="show whether the service is installed and serving")
+    svc.add_parser("restart", help="restart the running service (e.g. after updating)")
+    s_logs = svc.add_parser("logs", help="print the end of the service log")
+    s_logs.add_argument("-n", "--lines", type=int, default=40, help="number of lines (default 40)")
+    for p in svc.choices.values():
+        p.set_defaults(func=cmd_service)
 
     args = parser.parse_args(argv)
     _prefer_own_env_on_path()

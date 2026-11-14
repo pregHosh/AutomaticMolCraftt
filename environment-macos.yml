@@ -18,10 +18,10 @@ dependencies:
   - openbabel
   - nodejs
   - pip:
-      # MolCraftDiffusion 1.12.0 at its macOS-support commit: plain PyPI torch (with MPS) and
+      # MolCraftDiffusion 1.13.0 (same commit as the Linux file): plain PyPI torch (with MPS) and
       # pure-torch torch_scatter / torch_cluster shims instead of the PyG C++ extensions.
-      - molcraftdiffusion[mac] @ git+https://github.com/pregHosh/MolCraftDiffusion@dd69d35ac78f2b3c77a08b8a9285f65b89fc8b1e
-      - molcraft-mac-shims @ git+https://github.com/pregHosh/MolCraftDiffusion@dd69d35ac78f2b3c77a08b8a9285f65b89fc8b1e#subdirectory=mac_shims
+      - molcraftdiffusion[mac] @ git+https://github.com/pregHosh/MolCraftDiffusion@108dc45b11b9d73cca2c16f2d1d6b0f781c4aede
+      - molcraft-mac-shims @ git+https://github.com/pregHosh/MolCraftDiffusion@108dc45b11b9d73cca2c16f2d1d6b0f781c4aede#subdirectory=mac_shims
       # Analysis-tool dependencies. MolCraftDiffusion's [analyze] extra is not used: it pulls
       # posecheck, which pins pandas==2.0.0 and breaks numpy 2.
       - posebusters>=0.5.1

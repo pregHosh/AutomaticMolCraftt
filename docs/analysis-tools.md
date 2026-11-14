@@ -37,11 +37,12 @@ Many tools depend on outputs from earlier ones:
 
 1. **XYZ to SMILES** — produces the `smiles` column required by validity checks and similarity filters.
 2. **Validity and connectivity metrics** — use SMILES + XYZ to flag bad geometries; filter these out before expensive calculations.
-3. **XTB geometry optimization** *(optional)* — replace raw geometries with optimized ones before running single-point calculations.
-4. **XTB electronic properties** — single-point calculations on the (optionally optimized) geometries.
-5. **Featurize** — compute SOAP or UMA vectors.
-6. **Dimensionality reduction** — project featurization vectors to 2D for visualization.
-7. **Predict properties** — run a MolCraftDiffusion checkpoint for property inference.
+3. **Drug-likeness metrics** *(optional)* — QED, SA score, LogP and structural alerts for the molecules that passed.
+4. **XTB geometry optimization** *(optional)* — replace raw geometries with optimized ones before running single-point calculations.
+5. **XTB electronic properties** — single-point calculations on the (optionally optimized) geometries.
+6. **Featurize** — compute SOAP or UMA vectors.
+7. **Dimensionality reduction** — project featurization vectors to 2D for visualization.
+8. **Predict properties** — run a MolCraftDiffusion checkpoint for property inference.
 
 ---
 
@@ -66,6 +67,21 @@ Checks each molecule's geometry and connectivity against a set of chemical rules
 | Molecule converter | `xyz2mol` | xyz2mol, openbabel | Algorithm used to infer bonds from XYZ coordinates. Switch to `openbabel` if `xyz2mol` fails for your element types |
 
 **Output**: one boolean column per validity criterion (True = passes the check). Failed molecules are `False`.
+
+---
+
+### Drug-likeness metrics
+
+Scores each molecule with common medicinal-chemistry descriptors, computed with RDKit from the bonds inferred out of the XYZ geometry (this is `MolCraftDiff analyze metrics --metrics druglike`).
+
+| Parameter | Default | Options | What it does |
+|---|---|---|---|
+| Molecule converter | `xyz2mol` | xyz2mol, openbabel | Algorithm used to infer bonds from XYZ coordinates |
+| Conversion timeout per molecule, seconds | 10 | integer | Molecules whose bond inference takes longer are left empty |
+| RMSD of the pose vs UFF-optimised RDKit conformers (slow) | false | boolean | Also measures how far each geometry is from a force-field conformer of the same molecule |
+| Conformers per molecule for the RMSD | 20 | integer | Number of RDKit conformers embedded for that comparison |
+
+**Output columns added**: `QED`, `SA_score`, `LogP`, `MW`, `HBD`, `HBA`, `fsp3`, `lipinski`, `pains_pass`, `ring_filter_pass`, ring counts (`n_rings`, `n_aromatic_rings`, `n_aliphatic_rings`) and ring-size ratios (`ring_size_3` … `ring_size_9`), plus `valid_rdkit`. Molecules whose bonds cannot be inferred get `valid_rdkit = False` and empty descriptors. Use [XYZ to SMILES conversion](#xyz-to-smiles-conversion) if you also need the `smiles` column.
 
 ---
 

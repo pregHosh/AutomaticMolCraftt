@@ -92,3 +92,6 @@ CLAUDE.md
 Thumbs.db
 core
 core.*
+
+# Hugging Face download metadata left by `hf download --local-dir <repo>` (see scripts/install-macos.sh)
+/.cache/

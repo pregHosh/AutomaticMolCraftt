@@ -36,11 +36,24 @@ The **Task family** dropdown lists every family from `GET /training/task-familie
 
 | Category | Families | Description |
 |---|---|---|
-| `diffusion` | Diffusion (EGCL), Diffusion (EGCL, pretrained defaults), Diffusion (EGT), Tabasco (Flow) | DDPM/flow-based 3D molecule generation |
+| `diffusion` | Diffusion (EGCL), Diffusion (EGCL, pretrained defaults), Diffusion (EGT), Diffusion (Transformer), Diffusion (PaiNN), Diffusion (EquiformerV2), Tabasco (Flow), Tabasco (EGNN backbone) | DDPM/flow-based 3D molecule generation |
 | `regression` | Regression (EGCL), Regression (eSEN), Regression (EquiformerV2) | Supervised property predictor (used by CFG models for property steering) |
 | `ssl3d` | SSL-3D (EGCL), SSL-3D (EGT), SSL-3D (eSEN), SSL-3D (Equiformer) | Self-supervised 3D pre-training (denoising + masking) |
 | `vae` | VAE (Equiformer), VAE (Transformer) | Variational autoencoder for latent-space generation |
 | `guidance` | Guidance (EGCL), Guidance (eSEN) | Guidance-model training |
+
+!!! warning "Families that did not complete a test run"
+    Every family was run for one epoch on a small dataset with MolCraftDiffusion 1.13.0 on an Apple-Silicon
+    Mac (PyTorch MPS). These did not finish; the others trained and saved checkpoints.
+
+    | Family | What happened |
+    |---|---|
+    | Regression (eSEN), SSL-3D (eSEN), Guidance (eSEN), VAE (Transformer) | Stop at start-up on Apple Silicon: `Cannot convert a MPS Tensor to float64`, because MPS has no float64. Not tested on CUDA. |
+    | SSL-3D (EGT) | MolCraftDiffusion's EGT task factory rejects the `ssl3d` task type (`Unknown task_type 'ssl3d'`). |
+    | SSL-3D (Equiformer) | Fails in the EquiformerV2 forward pass (`Tensors must have same number of dimensions`). |
+    | VAE (Equiformer) | Trains an epoch, then fails in the post-epoch evaluation (`KeyError: 'match_rate'`). |
+
+    The last three also fail with the previous MolCraftDiffusion version; the code involved is unchanged.
 
 ---
 
@@ -120,11 +133,17 @@ Either CSV path or ASE DB path is required. If using CSV path without an ASE DB,
 | Load weights from | *(empty)* | Path to a checkpoint to initialize model weights from, for fine-tuning |
 | Resume checkpoint | *(empty)* | Path to a checkpoint to resume a training run from (optimizer/scheduler state included) |
 
+!!! note "Backbones with their own configuration block"
+    Hidden size and Number of layers are written into every family's config, but the Transformer, PaiNN,
+    EquiformerV2 and Tabasco backbones are configured through their own block in MolCraftDiffusion's
+    `configs/tasks/<family>.yaml` and may ignore these two fields. **Generate YAML** shows exactly what is sent.
+    The Tabasco families take their vocabulary size and *Max atoms* from the Data section.
+
 ---
 
 ### Diffusion settings
 
-Applies to task families in the `diffusion` category: Diffusion (EGCL), Diffusion (EGCL, pretrained defaults), Diffusion (EGT), and Tabasco (Flow).
+Applies to task families in the `diffusion` category: Diffusion (EGCL), Diffusion (EGCL, pretrained defaults), Diffusion (EGT), Diffusion (Transformer), Diffusion (PaiNN), Diffusion (EquiformerV2), Tabasco (Flow), Tabasco (EGNN backbone).
 
 | Parameter | Default | Description |
 |---|---|---|
@@ -245,7 +264,7 @@ Applies to task families in the `vae` category: VAE (Equiformer), VAE (Transform
 | Weight decay | 1e-12 | L2 regularisation coefficient |
 | Num epochs | 200 | Total training epochs. Leave blank to train by step count instead (see Num steps) |
 | Num steps | *(empty)* | Total training steps; overrides Num epochs when set |
-| Scheduler | `cosineannealing` | LR schedule: `cosineannealing`, `reducelronplateau`, `steplr`, `onecyclelr`, or `exponentiallr` |
+| Scheduler | `cosineannealing` | LR schedule: `cosineannealing`, `reducelronplateau`, `steplr`, `onecyclelr`, or `exponentiallr`. The regression families keep their own `reducelronplateau` schedule while this is left on `cosineannealing` (their trainer defaults would otherwise break the cosine scheduler) |
 | Validation interval | 3 | Epochs between validation runs |
 | EMA decay | 0.9999 | Exponential moving average decay for model weights — EMA weights are used at inference |
 | Precision | 32 | Floating-point precision: `32` (FP32), `16` (FP16), or `bf16` |

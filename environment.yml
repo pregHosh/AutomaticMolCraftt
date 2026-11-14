@@ -22,8 +22,8 @@ dependencies:
   - nodejs
   - pip:
       - --find-links https://data.pyg.org/whl/torch-2.6.0+cu124.html
-      # Pinned MolCraftDiffusion commit (1.12.0); keep in sync with MOLCRAFT_PINNED_COMMIT in backend/main.py.
-      - molcraftdiffusion[gpu] @ git+https://github.com/pregHosh/MolCraftDiffusion@b79e8aadc85f7047fbd9a70d1c41ea3aba0fc0a7
+      # Pinned MolCraftDiffusion commit (1.13.0); keep in sync with MOLCRAFT_PINNED_COMMIT in backend/main.py.
+      - molcraftdiffusion[gpu] @ git+https://github.com/pregHosh/MolCraftDiffusion@108dc45b11b9d73cca2c16f2d1d6b0f781c4aede
       # Analysis-tool dependencies. MolCraftDiffusion's [analyze] extra is not used: it pulls
       # posecheck, which pins pandas==2.0.0 and breaks numpy 2.
       - posebusters>=0.5.1
